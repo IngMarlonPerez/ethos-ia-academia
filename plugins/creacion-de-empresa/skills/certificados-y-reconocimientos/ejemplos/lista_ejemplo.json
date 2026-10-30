@@ -1,0 +1,25 @@
+[
+  {
+    "tipo": "mencion",
+    "codigo": "ETHOS-CERT-2026-0001",
+    "nombre": "Nombre y Apellido",
+    "motivo": "su compromiso, excelencia técnica y aporte sobresaliente a los proyectos de Ethos IA",
+    "fecha": "16 de octubre de 2026"
+  },
+  {
+    "tipo": "capacitacion",
+    "codigo": "ETHOS-CERT-2026-0002",
+    "nombre": "Nombre y Apellido",
+    "curso": "Nombre del curso",
+    "horas": 40,
+    "nota": "9,5/10",
+    "fecha": "16 de octubre de 2026"
+  },
+  {
+    "tipo": "logro",
+    "codigo": "ETHOS-CERT-2026-0003",
+    "nombre": "Nombre y Apellido",
+    "logro": "completar el reto Kernel Cero, de 31 niveles de terminal Linux",
+    "fecha": "16 de octubre de 2026"
+  }
+]

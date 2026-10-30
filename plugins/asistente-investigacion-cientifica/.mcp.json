@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "literatura": {
+      "command": "python",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/servers/literatura_mcp.py"],
+      "env": {
+        "ELSEVIER_API_KEY": "${user_config.elsevier_api_key}",
+        "ELSEVIER_INSTTOKEN": "${user_config.elsevier_insttoken}",
+        "CORREO_CONTACTO": "${user_config.correo_contacto}",
+        "PYTHONIOENCODING": "utf-8"
+      }
+    }
+  }
+}

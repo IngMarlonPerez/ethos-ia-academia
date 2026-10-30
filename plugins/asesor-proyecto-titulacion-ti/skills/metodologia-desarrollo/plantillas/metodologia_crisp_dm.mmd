@@ -1,0 +1,13 @@
+%% CRISP-DM con el entregable de cada fase (reemplaza el texto en cursiva por los archivos reales).
+%% Dos franjas enlazadas entre subgrafos para que no quede ni muy plano ni muy alto.
+flowchart TB
+  subgraph A["Entender y preparar"]
+    direction LR
+    F1["1. Comprensión del negocio<br/><i>objetivos · historias<br/>criterios de éxito</i>"] --> F2["2. Comprensión de los datos<br/><i>fuentes · calidad</i>"] --> F3["3. Preparación<br/><i>ETL · anonimización<br/>variables</i>"]
+  end
+  subgraph B["Construir, evaluar y desplegar"]
+    direction LR
+    F4["4. Modelado<br/><i>modelos candidatos</i>"] --> F5["5. Evaluación<br/><i>validación cruzada y temporal<br/>métricas vs metas</i>"] --> F6["6. Despliegue<br/><i>almacén · API · panel</i>"]
+  end
+  A -- "datos listos" --> B
+  B -. "iteración: defectos o ajustes vuelven a la fase 1 o 3" .-> A

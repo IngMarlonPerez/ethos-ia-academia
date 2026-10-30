@@ -1,0 +1,39 @@
+{
+  "tamano": "A0",
+  "paleta": "unemi",
+  "logo": "",
+  "encabezado": {
+    "titulo": "Título del proyecto de titulación de TI (verbo + variable + método + contexto)",
+    "institucion": "Facultad de Ciencias e Ingeniería\nCarrera de Tecnologías de la Información",
+    "autores": "Nombre1 Apellido1 Apellido2   |   Nombre1 Apellido1 Apellido2",
+    "tutor": "Tutor/a: Mgs. Nombre1 Apellido1 Apellido2"
+  },
+  "columnas": [
+    [
+      {"tipo": "seccion", "titulo": "Problema"},
+      {"tipo": "parrafo", "texto": "Necesidad, causas y efectos, con cifras de fuentes académicas (Autor, año)."},
+      {"tipo": "cifras", "items": [{"valor": "[cifra 1]", "etiqueta": "qué mide (Autor, año)"}, {"valor": "[cifra 2]", "etiqueta": "qué mide (Autor, año)"}]},
+      {"tipo": "tarjeta", "color": "naranja", "titulo": "Vacío identificado", "texto": "Lo que los trabajos previos no resuelven y el presente caso aporta."},
+      {"tipo": "seccion", "titulo": "Objetivos"},
+      {"tipo": "tarjeta", "color": "azul", "titulo": "Objetivo general", "texto": "Verbo de Bloom + qué + cómo + para qué."},
+      {"tipo": "numerados", "items": ["Objetivo específico 1.", "Objetivo específico 2.", "Objetivo específico 3."]}
+    ],
+    [
+      {"tipo": "seccion", "titulo": "Diseño"},
+      {"tipo": "diagrama", "spec": {"tipo": "niveles", "centro": "Datos", "niveles": [
+        {"nombre": "Presentación", "descripcion": "Interfaz web"}, {"nombre": "Servicios", "descripcion": "API REST"},
+        {"nombre": "Dominio", "descripcion": "Reglas y modelos"}, {"nombre": "Datos", "descripcion": "Base de datos"}]}},
+      {"tipo": "seccion", "titulo": "Metodología"},
+      {"tipo": "diagrama", "spec": {"tipo": "proceso", "pasos": [
+        {"titulo": "Fase 1", "texto": "Entregable"}, {"titulo": "Fase 2", "texto": "Entregable"}, {"titulo": "Fase 3", "texto": "Entregable"}]}},
+      {"tipo": "lista", "items": ["Herramienta o tecnología 1 (decidida con al menos 3 candidatas).", "Herramienta o tecnología 2."]}
+    ],
+    [
+      {"tipo": "seccion", "titulo": "Resultados"},
+      {"tipo": "grafico", "tipo_grafico": "barras", "categorias": ["Métrica A", "Métrica B", "Métrica C"],
+       "series": [{"nombre": "Valor medido", "valores": [0.0, 0.0, 0.0]}], "alto_cm": 12},
+      {"tipo": "destacado", "titulo": "Conclusión", "texto": "Una conclusión por objetivo, con la cifra medida."}
+    ]
+  ],
+  "referencias": ["Apellido, N. (2025). Título del artículo. Revista, 1(1), 1–10. https://doi.org/10.0000/ejemplo"]
+}

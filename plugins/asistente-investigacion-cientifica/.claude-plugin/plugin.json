@@ -1,0 +1,30 @@
+{
+  "name": "asistente-investigacion-cientifica",
+  "displayName": "Asistente de Investigación Científica",
+  "version": "1.2.2",
+  "description": "Pipeline completo de revisión sistemática con método PRISMA 2020: variables y keywords, búsqueda en Scopus (API oficial de Elsevier o navegador), cribado con criterios, descarga de PDF de acceso abierto, lectura a fondo, las 4 matrices de revisión con diagrama PRISMA, redacción académica en estilo APA 7.ª edición y paquete de evidencias para Drive y Zotero.",
+  "author": {
+    "name": "Ethos IA (ETHOSLAB S.A.S.)"
+  },
+  "license": "MIT",
+  "keywords": ["investigacion", "prisma", "scopus", "revision-sistematica", "apa7", "matriz-de-revision", "zotero", "academico"],
+  "userConfig": {
+    "elsevier_api_key": {
+      "type": "string",
+      "title": "Clave de la API de Elsevier (Scopus)",
+      "description": "Clave personal gratuita para uso académico no comercial. Se obtiene en https://dev.elsevier.com con el correo institucional. Sin clave, el asistente busca en Scopus desde el navegador.",
+      "sensitive": true
+    },
+    "elsevier_insttoken": {
+      "type": "string",
+      "title": "Token institucional de Elsevier (opcional)",
+      "description": "Solo si buscas fuera de la red de tu universidad. Lo entrega la biblioteca o Elsevier; déjalo vacío si no lo tienes.",
+      "sensitive": true
+    },
+    "correo_contacto": {
+      "type": "string",
+      "title": "Correo de contacto (opcional)",
+      "description": "Unpaywall lo exige y OpenAlex lo recomienda para identificar las consultas. Se envía solo a esos dos servicios."
+    }
+  }
+}

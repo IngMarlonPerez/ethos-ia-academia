@@ -1,0 +1,21 @@
+%% Casos de uso (Mermaid no tiene diagrama de casos de uso: se dibuja como flowchart).
+%% Actores = círculos dobles fuera del sistema; casos = rectángulos dentro del subgrafo.
+flowchart LR
+  A1(("Actor principal<br/>(sin perfil técnico)"))
+  A2(("Administrador de TI"))
+  A3(("Sistema externo<br/>(actor de sistema)"))
+
+  subgraph SIS["Nombre del sistema"]
+    CU1["CU-01 Caso de uso principal"]
+    CU2["CU-02 Consultar …"]
+    CU3["CU-03 Exportar …"]
+    CU4["CU-04 Configurar …"]
+    CU5["CU-05 Operación interna"]
+  end
+
+  A1 --> CU1
+  A1 --> CU2
+  A1 --> CU3
+  A2 --> CU4
+  CU2 -. "incluye" .-> CU5
+  A3 --> CU5

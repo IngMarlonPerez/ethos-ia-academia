@@ -1,0 +1,14 @@
+%% Colaboración (comunicación): objetos y mensajes NUMERADOS (Mermaid lo dibuja como flowchart).
+flowchart TB
+  UI["Interfaz<br/>(componente)"]
+  API["API<br/>(archivo de rutas)"]
+  SRV["Servicio de dominio"]
+  SEG["Seguridad / validación"]
+  BD[("Base de datos")]
+
+  UI -- "1: solicitud HTTP" --> API
+  API -- "2: validar entrada y rol" --> SEG
+  API -- "3: ejecutar caso de uso" --> SRV
+  SRV -- "4: consulta" --> BD
+  BD -- "5: filas" --> SRV
+  API -- "6: respuesta JSON" --> UI

@@ -1,0 +1,18 @@
+%% Arquitectura (la elegida en el ADR). Ejemplo: cliente-servidor desacoplado con backend en capas.
+%% Truco de legibilidad: los enlaces van ENTRE subgrafos (CLI --> SRV), no entre nodos internos;
+%% así Mermaid respeta el "direction LR" de cada franja y el diagrama queda en bandas horizontales.
+flowchart TB
+  subgraph CLI["Cliente (SPA)"]
+    direction LR
+    V["Vistas y componentes"] --> SVC["Servicios HTTP"]
+  end
+  subgraph SRV["Servidor (API REST)"]
+    direction LR
+    R["Presentación<br/>(rutas, autenticación)"] --> D["Dominio<br/>(servicios, reglas, modelos)"] --> DA["Datos<br/>(repositorios, ETL)"]
+  end
+  subgraph DAT["Datos"]
+    direction LR
+    BD[("Base de datos")]
+  end
+  CLI -- "HTTPS + JSON" --> SRV
+  SRV -- "SQL parametrizado" --> DAT

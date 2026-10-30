@@ -1,0 +1,15 @@
+%% Despliegue: nodos físicos o contenedores y lo que corre en cada uno.
+flowchart TB
+  subgraph PC["Equipo del usuario"]
+    NAV["Navegador web"]
+  end
+  subgraph SERV["Servidor de aplicaciones"]
+    WEB["Frontend estático (build)"]
+    APP["API (proceso uvicorn / node)"]
+  end
+  subgraph DBS["Servidor de base de datos (contenedor)"]
+    BD[("Motor de base de datos")]
+  end
+  NAV -- "HTTPS" --> WEB
+  NAV -- "HTTPS /api" --> APP
+  APP -- "TCP (puerto del motor)" --> BD

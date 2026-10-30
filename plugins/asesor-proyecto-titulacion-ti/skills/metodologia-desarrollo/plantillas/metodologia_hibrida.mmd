@@ -1,0 +1,14 @@
+%% Híbrida: CRISP-DM para el componente analítico dentro de iteraciones incrementales de software.
+flowchart LR
+  subgraph IT["Iteraciones incrementales (software)"]
+    direction TB
+    I1["Iteración 1<br/>Datos y ETL"] --> I2["Iteración 2<br/>Modelo y API"] --> I3["Iteración 3<br/>Interfaz y pruebas"]
+  end
+  subgraph CD["CRISP-DM (componente analítico)"]
+    direction TB
+    C1["Comprensión del negocio"] --> C2["Comprensión de los datos"] --> C3["Preparación"]
+    C3 --> C4["Modelado"] --> C5["Evaluación"] --> C6["Despliegue"]
+  end
+  I1 -. "fases 1–3" .-> C1
+  I2 -. "fases 4–5" .-> C4
+  I3 -. "fase 6" .-> C6

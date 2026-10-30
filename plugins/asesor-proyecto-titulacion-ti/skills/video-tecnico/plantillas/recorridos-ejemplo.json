@@ -1,0 +1,290 @@
+[
+  {
+    "id": "01-arquitectura",
+    "titulo": "1 · Arquitectura: contenedores y gateway",
+    "descripcion": "Cómo se levanta el sistema y cómo entra cada petición.",
+    "pasos": [
+      {
+        "archivo": "docker-compose.yml",
+        "patron": "  postgres:",
+        "titulo": "PostgreSQL",
+        "nota": "Una sola instancia de **PostgreSQL 16** con dos esquemas (`auth` y `fleet`). No se publica al equipo anfitrión: solo la ven los servicios de la red de Docker."
+      },
+      {
+        "archivo": "infra/postgres/roles.sql",
+        "patron": "-- Aislamiento",
+        "titulo": "Un rol por servicio",
+        "nota": "Cada microservicio tiene su propio rol, dueño de su esquema y sin permisos sobre el del otro. **reporting-service no usa la base**: pide los datos a fleet-core por HTTP."
+      },
+      {
+        "archivo": "docker-compose.yml",
+        "patron": "  auth-service:",
+        "titulo": "Los tres microservicios",
+        "nota": "**auth-service**, **fleet-core-service** y **reporting-service**: cada uno es una API FastAPI en su propio contenedor, con su imagen, su `.env` y su chequeo de salud."
+      },
+      {
+        "archivo": "docker-compose.yml",
+        "patron": "  gateway:",
+        "titulo": "API Gateway",
+        "nota": "**Nginx** es el único punto de entrada (puerto 8080). Los servicios solo exponen el 8000 dentro de la red de Docker."
+      },
+      {
+        "archivo": "infra/nginx/nginx.conf",
+        "patron": "location = /api/auth/login",
+        "titulo": "Rutas del gateway",
+        "nota": "`/api/auth` → auth-service, `/api/fleet` → fleet-core, `/api/reports` → reporting. El login tiene un límite de 10 intentos por minuto (RNF-03)."
+      },
+      {
+        "archivo": "infra/nginx/nginx.conf",
+        "patron": "location /api/fleet/despacho/",
+        "titulo": "Ruta del despacho QR",
+        "nota": "El portal del conductor entra por aquí, con su propio límite de tasa para frenar la adivinación de la credencial del QR (RF-18)."
+      },
+      {
+        "archivo": "docker-compose.yml",
+        "patron": "  frontend:",
+        "titulo": "Frontend",
+        "nota": "React + TypeScript + Vite en el puerto 5173. El navegador habla **solo con el gateway**, nunca directo con un microservicio."
+      }
+    ]
+  },
+  {
+    "id": "02-backend-auth",
+    "titulo": "2 · Backend: auth-service (usuarios, roles y JWT)",
+    "descripcion": "Autenticación y autorización del sistema.",
+    "pasos": [
+      {
+        "archivo": "services/auth-service/app/main.py",
+        "patron": "app = FastAPI",
+        "titulo": "Aplicación FastAPI",
+        "nota": "Arranque del servicio: CORS, routers de autenticación, usuarios y roles, y `/health` para Docker. Fuera de desarrollo no arranca con secretos por defecto (RNF-02)."
+      },
+      {
+        "archivo": "services/auth-service/app/core/security.py",
+        "patron": "_pwd_context",
+        "titulo": "Contraseñas con bcrypt",
+        "nota": "Las contraseñas nunca se guardan en texto plano: se guarda su hash **bcrypt**."
+      },
+      {
+        "archivo": "services/auth-service/app/core/security.py",
+        "patron": "def create_access_token",
+        "titulo": "Emisión del JWT",
+        "nota": "El token lleva el id del usuario (`sub`), su **rol** y la expiración. Los otros servicios lo validan con la misma clave, sin consultar la base de usuarios."
+      },
+      {
+        "archivo": "services/auth-service/app/routers/auth.py",
+        "patron": "def login",
+        "titulo": "Endpoint de login",
+        "nota": "`POST /login` (por el gateway: `/api/auth/login`): verifica las credenciales, aplica el bloqueo temporal por intentos fallidos y devuelve el JWT."
+      },
+      {
+        "archivo": "services/auth-service/app/core/lockout.py",
+        "patron": "def ",
+        "titulo": "Bloqueo por intentos fallidos",
+        "nota": "Después de varios intentos fallidos la cuenta se bloquea un tiempo (RNF-03), además del límite del gateway."
+      }
+    ]
+  },
+  {
+    "id": "03-backend-fleet-core",
+    "titulo": "3 · Backend: fleet-core-service (dominio de la flota)",
+    "descripcion": "Vehículos, conductores, viajes, gastos, mantenimiento, costos y despacho QR.",
+    "pasos": [
+      {
+        "archivo": "services/fleet-core-service/app/main.py",
+        "patron": "include_router\\(vehicles_router\\)",
+        "titulo": "Módulos del dominio",
+        "nota": "Un router por módulo: vehículos, conductores, viajes, gastos, mantenimiento, analítica, costos y despacho."
+      },
+      {
+        "archivo": "services/fleet-core-service/app/core/database.py",
+        "patron": "CONNECTION_OPTIONS",
+        "titulo": "Esquema propio",
+        "nota": "`search_path=fleet`: este servicio solo trabaja en su esquema. Las fechas se manejan en UTC."
+      },
+      {
+        "archivo": "services/fleet-core-service/app/core/deps.py",
+        "patron": "def require_role",
+        "titulo": "Autorización por rol",
+        "nota": "Cada endpoint declara qué roles lo usan (RF-03): sin token responde 401; con un rol no permitido, 403."
+      },
+      {
+        "archivo": "services/fleet-core-service/app/models/trip.py",
+        "patron": "class Trip",
+        "titulo": "Modelo de datos",
+        "nota": "Modelo ORM (SQLAlchemy) de un viaje; los cambios de esquema se versionan con **Alembic** (`migrations/versions`)."
+      },
+      {
+        "archivo": "services/fleet-core-service/app/trips/router.py",
+        "patron": "def close_trip",
+        "titulo": "Flujo de punta a punta: cerrar un viaje",
+        "nota": "Al cerrar el viaje se guardan el km final y el ingreso, se actualiza el odómetro del vehículo y se evalúan los mantenimientos pendientes: devuelve las **alertas** vencidas o próximas (RF-07, RF-13)."
+      },
+      {
+        "archivo": "services/fleet-core-service/app/maintenance/policy.py",
+        "patron": "def assess",
+        "titulo": "Política de alertas",
+        "nota": "Calcula los km restantes y la urgencia (vencido o próximo) con el umbral de `maintenance_policy.json`: 1000 km, la mediana de los expertos."
+      },
+      {
+        "archivo": "services/fleet-core-service/app/despacho/router.py",
+        "patron": "def create_despacho",
+        "titulo": "Despacho por QR",
+        "nota": "El conductor registra la salida desde el celular, autenticado con la credencial de su QR (guardada como hash y con vigencia), sin usuario ni contraseña (RF-18)."
+      },
+      {
+        "archivo": "services/fleet-core-service/app/analytics/router.py",
+        "patron": "def trip_aggregate",
+        "titulo": "Agregaciones para reportes",
+        "nota": "Las sumas se hacen en SQL aquí y reporting-service las consume: pocas llamadas sin importar cuántos viajes haya."
+      },
+      {
+        "archivo": "services/fleet-core-service/app/costs/proration.py",
+        "patron": "def accrued",
+        "titulo": "Prorrateo de costos fijos",
+        "nota": "Los costos fijos y de personal se devengan por los días del período (año de 365 días)."
+      }
+    ]
+  },
+  {
+    "id": "04-reporting-ahp",
+    "titulo": "4 · Backend: reporting-service, modelo de costos y AHP",
+    "descripcion": "Tablero, indicadores y priorización del mantenimiento.",
+    "pasos": [
+      {
+        "archivo": "services/reporting-service/app/core/fleet_client.py",
+        "patron": "FLEET_SERVICE_BASE_URL",
+        "titulo": "Sin base de datos propia",
+        "nota": "reporting-service obtiene los datos de fleet-core **por HTTP**, reenviando el token del usuario: así respeta los mismos permisos."
+      },
+      {
+        "archivo": "services/reporting-service/app/dashboards/router.py",
+        "patron": "dashboard/summary",
+        "titulo": "Endpoint del tablero",
+        "nota": "`GET /dashboard/summary` (por el gateway: `/api/reports/dashboard/summary`): costos por vehículo y de la flota."
+      },
+      {
+        "archivo": "services/reporting-service/app/dashboards/cost_model.py",
+        "patron": "def compute_indicators",
+        "titulo": "Modelo de costos",
+        "nota": "Ct = Cv + Cf, costo e ingreso por km, utilidad y margen (Poliak et al., 2025; Zysińska y Menes, 2026). Validado con un mes real: diferencia de −0,48 % en el costo total."
+      },
+      {
+        "archivo": "services/reporting-service/app/dashboards/ahp_config.json",
+        "patron": "comparaciones_saaty",
+        "titulo": "Juicios de los expertos",
+        "nota": "Comparaciones de Saaty por media geométrica de los expertos consistentes (E2 y E3). La procedencia queda escrita en el propio archivo."
+      },
+      {
+        "archivo": "services/reporting-service/app/dashboards/ahp.py",
+        "patron": "def _weights_and_cr",
+        "titulo": "Pesos y razón de consistencia",
+        "nota": "Normalización por columnas, λmax, CI y **CR = CI / RI**. Verificado de forma independiente con la librería **ahpy**."
+      },
+      {
+        "archivo": "services/reporting-service/app/dashboards/ahp.py",
+        "patron": "_require\\(cr < CONSISTENCY_LIMIT",
+        "titulo": "El servicio no arranca si CR ≥ 0,10",
+        "nota": "Si alguien carga una matriz inconsistente, el servicio se niega a arrancar."
+      },
+      {
+        "archivo": "services/reporting-service/app/dashboards/ahp.py",
+        "patron": "def priority_score",
+        "titulo": "Puntaje de prioridad",
+        "nota": "Suma ponderada de seguridad, urgencia y costo (subpuntajes de 0 a 1)."
+      },
+      {
+        "archivo": "services/reporting-service/app/dashboards/service.py",
+        "patron": "km_tiebreak\\(item\\.km_remaining\\)",
+        "titulo": "Ranking final",
+        "nota": "Ordena por puntaje; a igual puntaje, primero el más vencido en km: la regla «seguridad primero y luego el kilómetro» que expresó una de las propietarias entrevistadas (E-P2)."
+      }
+    ]
+  },
+  {
+    "id": "05-frontend",
+    "titulo": "5 · Frontend: React + TypeScript",
+    "descripcion": "Cómo se conecta el navegador con el backend y qué muestra.",
+    "pasos": [
+      {
+        "archivo": "frontend/src/App.tsx",
+        "patron": "<Routes>",
+        "titulo": "Rutas de la aplicación",
+        "nota": "Cada pantalla es una ruta. `/login` y `/despacho` son públicas; las demás exigen sesión y algunas, el rol admin."
+      },
+      {
+        "archivo": "frontend/src/services/apiClient.ts",
+        "patron": "const API_BASE_URL",
+        "titulo": "Conexión con el gateway",
+        "nota": "Todas las llamadas van a `http://<host>:8080/api`, es decir, al **gateway**; nunca a un microservicio directamente."
+      },
+      {
+        "archivo": "frontend/src/services/apiClient.ts",
+        "patron": "Authorization",
+        "titulo": "Token en cada petición",
+        "nota": "El JWT viaja en la cabecera `Authorization: Bearer`."
+      },
+      {
+        "archivo": "frontend/src/context/AuthContext.tsx",
+        "patron": "login: \\(username",
+        "titulo": "Sesión del usuario",
+        "nota": "El contexto de autenticación guarda el token y el rol, y cierra la sesión si el servidor rechaza el token."
+      },
+      {
+        "archivo": "frontend/src/pages/DashboardPage.tsx",
+        "patron": "reportsApi\\.summary\\(token, filters\\)",
+        "titulo": "Tablero",
+        "nota": "El tablero consume reporting-service: indicadores, gráficas, estructura de costos y ranking AHP."
+      },
+      {
+        "archivo": "frontend/src/pages/MaintenancePage.tsx",
+        "patron": "maintenancePriority\\(token\\)",
+        "titulo": "Mantenimiento priorizado",
+        "nota": "Lista de mantenimientos ordenada por el AHP del backend."
+      },
+      {
+        "archivo": "frontend/src/pages/DriversPage.tsx",
+        "patron": "<QRCodeSVG value=",
+        "titulo": "Generación del QR",
+        "nota": "El administrador genera la credencial del conductor como código QR para la cabina."
+      },
+      {
+        "archivo": "frontend/src/pages/DespachoPage.tsx",
+        "patron": "despachoApi\\.registrarSalida",
+        "titulo": "Portal móvil del conductor",
+        "nota": "Desde el celular, el conductor registra la salida del viaje (RF-18)."
+      }
+    ]
+  },
+  {
+    "id": "06-pruebas",
+    "titulo": "6 · Pruebas, integración continua y validación",
+    "descripcion": "Cómo se comprueba que el sistema funciona.",
+    "pasos": [
+      {
+        "archivo": "services/reporting-service/tests/test_ahp.py",
+        "patron": "def test_pesos_ahp_suman_uno",
+        "titulo": "Pruebas unitarias",
+        "nota": "pytest: cada cálculo (AHP, costos, prorrateo) se compara con un cálculo hecho a mano."
+      },
+      {
+        "archivo": "services/reporting-service/tests/test_ahp_desempate_tablero.py",
+        "patron": "def test_",
+        "titulo": "Prueba del desempate",
+        "nota": "Comprueba que, a igual puntaje, el tablero muestra primero el mantenimiento más vencido."
+      },
+      {
+        "archivo": "services/reporting-service/tests/test_costs_smoke.py",
+        "patron": "def test_los_costos_fijos",
+        "titulo": "Pruebas de integración",
+        "nota": "Peticiones HTTP reales a través del gateway, con autenticación y roles, contra una pila aislada."
+      },
+      {
+        "archivo": ".github/workflows/ci.yml",
+        "patron": "jobs:",
+        "titulo": "Integración continua",
+        "nota": "GitHub Actions corre las pruebas unitarias, construye las imágenes y levanta la pila completa en cada cambio."
+      }
+    ]
+  }
+]

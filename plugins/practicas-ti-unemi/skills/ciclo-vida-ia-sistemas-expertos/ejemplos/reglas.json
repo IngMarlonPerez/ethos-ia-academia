@@ -1,0 +1,5 @@
+{
+  "R1": {"si": ["fiebre_alta", "dolor_muscular_intenso", "inicio_brusco"], "entonces": "Cuadro compatible con gripe (influenza)"},
+  "R2": {"si": ["estornudos", "picazon_ojos", "secrecion_nasal_clara", "sin_fiebre"], "entonces": "Cuadro compatible con alergia estacional"},
+  "R3": {"si": ["congestion_leve", "dolor_garganta_leve", "sin_fiebre"], "entonces": "Cuadro compatible con resfriado común"}
+}

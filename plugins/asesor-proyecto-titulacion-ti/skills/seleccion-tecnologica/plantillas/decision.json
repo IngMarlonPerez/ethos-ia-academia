@@ -1,0 +1,44 @@
+{
+  "_ayuda": "EJEMPLO de decisión tecnológica. Copia este archivo como decisiones/DT-NN_<tema>.json y reemplaza TODO: criterios con su origen real (RNF/objetivo/restricción), puntajes 1–5 con justificación y una fuente verificable por celda (artículo con DOI, trabajo previo de la tabla o documentación oficial con fecha de consulta).",
+  "id": "DT-01",
+  "tipo": "tecnologia",
+  "decision": "Lenguaje de programación del backend",
+  "contexto": "EJEMPLO. El backend debe entrenar y servir un modelo de aprendizaje automático, exponer una API REST para un frontend web y conectarse a una base de datos relacional. Equipo de 2 personas, plazo de 6 meses, sin presupuesto para licencias.",
+  "criterios": [
+    {"id": "C1", "nombre": "Ecosistema para el problema (ML/datos)", "peso": 30, "origen": "OE2 y RF-03", "descripcion": "Bibliotecas maduras para el tipo de modelo y su validación."},
+    {"id": "C2", "nombre": "Evidencia en trabajos previos", "peso": 20, "origen": "Tabla de trabajos previos (etapa 2)", "descripcion": "Cuántos de los trabajos previos incluidos lo usan."},
+    {"id": "C3", "nombre": "Dominio del equipo", "peso": 20, "origen": "Restricción: equipo de 2 personas, 6 meses", "descripcion": "Curva de aprendizaje real del equipo."},
+    {"id": "C4", "nombre": "Rendimiento de la API", "peso": 15, "origen": "RNF-04 (tiempo de respuesta)", "descripcion": ""},
+    {"id": "C5", "nombre": "Licencia y soporte a largo plazo", "peso": 15, "origen": "RNF-09 (costo cero, mantenibilidad)", "descripcion": "Licencia libre y versión con soporte vigente."}
+  ],
+  "candidatas": [
+    {"id": "python", "nombre": "Python", "version": "3.14",
+     "puntajes": {
+       "C1": {"valor": 5, "justificacion": "scikit-learn, pandas e imbalanced-learn cubren el pipeline completo.", "fuente": "(reemplazar: documentación oficial de scikit-learn, consultada AAAA-MM-DD)"},
+       "C2": {"valor": 5, "justificacion": "Lo usan 8 de 12 trabajos previos.", "fuente": "tabla_trabajos_previos.py --conteos"},
+       "C3": {"valor": 4, "justificacion": "Ambos autores lo usaron en dos asignaturas.", "fuente": "Malla de la carrera (asignaturas cursadas)"},
+       "C4": {"valor": 3, "justificacion": "Suficiente con servidor ASGI para la carga esperada.", "fuente": "(reemplazar: artículo con DOI o prueba de carga propia)"},
+       "C5": {"valor": 5, "justificacion": "Licencia PSF; ciclo de soporte de 5 años.", "fuente": "(reemplazar: python.org/downloads, consultado AAAA-MM-DD)"}}},
+    {"id": "java", "nombre": "Java", "version": "21 LTS",
+     "puntajes": {
+       "C1": {"valor": 3, "justificacion": "Weka y Tribuo existen, con menos oferta para validación y explicabilidad.", "fuente": "(reemplazar)"},
+       "C2": {"valor": 2, "justificacion": "Lo usa 1 de 12 trabajos previos.", "fuente": "tabla_trabajos_previos.py --conteos"},
+       "C3": {"valor": 3, "justificacion": "Conocido, pero sin experiencia en ML.", "fuente": "Malla de la carrera"},
+       "C4": {"valor": 5, "justificacion": "Alto rendimiento en la JVM.", "fuente": "(reemplazar)"},
+       "C5": {"valor": 4, "justificacion": "OpenJDK GPL con excepción; LTS.", "fuente": "(reemplazar)"}}},
+    {"id": "node", "nombre": "Node.js (TypeScript)", "version": "24 LTS",
+     "puntajes": {
+       "C1": {"valor": 2, "justificacion": "Ecosistema de ML limitado para validación cruzada y explicabilidad.", "fuente": "(reemplazar)"},
+       "C2": {"valor": 1, "justificacion": "No lo usa ningún trabajo previo para el modelo.", "fuente": "tabla_trabajos_previos.py --conteos"},
+       "C3": {"valor": 4, "justificacion": "El frontend ya se hace en JavaScript.", "fuente": "Malla de la carrera"},
+       "C4": {"valor": 4, "justificacion": "E/S no bloqueante eficiente para una API.", "fuente": "(reemplazar)"},
+       "C5": {"valor": 5, "justificacion": "Licencia MIT; versión LTS.", "fuente": "(reemplazar)"}}}
+  ],
+  "desempate": "C1",
+  "eleccion": {
+    "estado": "Propuesta",
+    "razon": "",
+    "consecuencias": []
+  },
+  "verificacion_codigo": {"archivo": "backend/requirements.txt", "paquete": "scikit-learn", "version": "1.9"}
+}

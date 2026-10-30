@@ -1,0 +1,29 @@
+{
+  "name": "practicas-ti-unemi",
+  "displayName": "Prácticas de TI (UNEMI)",
+  "version": "1.2.1",
+  "description": "Hace de punta a punta las prácticas de laboratorio de la carrera de Tecnologías de la Información de la UNEMI: lee la guía de práctica (incluidas las páginas en imagen), mide la red (Wi-Fi 2,4 y 5 GHz, Ethernet, datos móviles) con ping y Speedtest, compara plataformas de comercio electrónico sin comprar, simula con Docker lo que no se puede medir (datos móviles, red institucional, cifrado de disco completo), prueba cifrado y antivirus (VeraCrypt, 7-Zip, Defender; BitLocker solo en Windows Pro), compara el ciclo de vida de software tradicional y de IA, construye un sistema experto de reglas frente a un modelo generativo, toma capturas como evidencia y arma el informe en Word sobre la plantilla oficial con literatura de Scopus en APA 7. Además arma tareas grupales de Gestión de TI (ITIL 4, COBIT, ISO 20000) en Word con KPI y anexo de IA.",
+  "author": {
+    "name": "Ethos IA (ETHOSLAB S.A.S.)"
+  },
+  "license": "MIT",
+  "keywords": [
+    "unemi",
+    "tecnologias-de-la-informacion",
+    "practicas",
+    "red",
+    "speedtest",
+    "cifrado",
+    "veracrypt",
+    "sistema-experto",
+    "apa7",
+    "evidencias",
+    "docker",
+    "simulacion",
+    "luks",
+    "iperf3",
+    "itil",
+    "gestion-de-ti",
+    "kpi"
+  ]
+}

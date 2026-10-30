@@ -1,0 +1,28 @@
+{
+  "_ayuda": "Datos de las matrices metodológicas que no viven en otros JSON del proyecto. La extracción bibliográfica sale de literatura/trabajos_previos.json, la trazabilidad de requerimientos/requerimientos.json y las decisiones de decisiones/DT-*.json. Borra los ejemplos.",
+  "salida": "documento/Matrices_Metodologicas.xlsx",
+  "consistencia": [
+    {"_ejemplo": true, "problema": "…", "objetivo": "OG: Desarrollar …", "nivel_bloom": "Crear (6)",
+     "dimension": "Unidad de análisis: …", "metodologia": "CRISP-DM / Scrum …", "resultado_instrumento": "Prototipo funcional; métricas …"}
+  ],
+  "prisma": {
+    "_nota": "Si la revisión se hizo con el Asistente de Investigación Científica, pon aquí la ruta de su Excel (matrices-revision) y deja 'fases' vacío.",
+    "excel_revision": "",
+    "busquedas": ["B1"],
+    "fases": [
+      {"_ejemplo": true, "fase": "Identificación", "B1": 459, "criterio": "TITLE-ABS-KEY(…) en Scopus", "motivo": ""}
+    ]
+  },
+  "coherencia_literatura_codigo": [
+    {"_ejemplo": true, "antecedente": "Apellido et al. (2025)", "afirma": "Qué afirma el documento apoyado en este antecedente",
+     "decision_codigo": "Qué se hizo en el código por ese motivo", "archivo": "backend/ml/entrenar.py",
+     "evidencia": "ROC-AUC temporal = {cifra}",
+     "cifra": {"archivo": "../codigo/backend/ml/models/metrics.json", "ruta": "validacion_temporal.roc_auc", "decimales": 3}}
+  ],
+  "oficiales": {
+    "_nota": "Filas extra para las hojas oficiales del perfil. «2. Estado del Arte» se llena sola desde trabajos_previos.json.",
+    "1.1 Matriz de congruencia": [],
+    "3. Contexto": [],
+    "Lectura Publicaciones": []
+  }
+}

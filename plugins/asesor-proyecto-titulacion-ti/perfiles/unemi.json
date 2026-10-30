@@ -1,0 +1,555 @@
+{
+  "id": "unemi",
+  "institucion": "Universidad Estatal de Milagro (UNEMI)",
+  "pais": "Ecuador",
+  "modalidad": "Estudio de caso práctico (Ingeniería en Tecnologías de la Información)",
+  "fuente_del_perfil": "Generado con perfil_desde_plantilla.py desde «Formato de trabajo de titulación.docx» y completado con los Avances 1 y 2 de la tesis VicMar Data AI (2026) y la carpeta de ejemplo de la carrera.",
+  "plantilla": {
+    "archivo": "Formato de trabajo de titulación.docx",
+    "nota": "La portada, certificados y declaración de autoría se dejan tal cual; los errores de la plantilla se comunican a quien la arma, no se corrigen por cuenta propia."
+  },
+  "ley_datos_personales": {
+    "nombre": "Ley Orgánica de Protección de Datos Personales (LOPDP)",
+    "cita": "Asamblea Nacional del Ecuador (2021)",
+    "referencia_apa": "Asamblea Nacional del Ecuador. (2021). *Ley Orgánica de Protección de Datos Personales*. Registro Oficial, Quinto Suplemento n.º 459, 26 de mayo de 2021."
+  },
+  "formato": {
+    "papel_cm": [
+      21.0,
+      29.7
+    ],
+    "margenes_cm": {
+      "izquierdo": 3.0,
+      "derecho": 3.0,
+      "superior": 2.5,
+      "inferior": 2.5
+    },
+    "fuente": "Arial",
+    "tam_pt": 12,
+    "interlineado": 1.5,
+    "espacio_despues_pt": 10,
+    "titulo1_pt": 16,
+    "titulo2_pt": 13,
+    "fuente_codigo": "Consolas",
+    "tam_codigo_pt": 8.5,
+    "color_encabezado_tabla": "D9E2F3",
+    "estilo_citas": "APA 7",
+    "leyendas": "APA 7: «Figura N»/«Tabla N» en negrita y título en cursiva ARRIBA; «Nota.» con la fuente DEBAJO.",
+    "resumen_interlineado": 1.0
+  },
+  "secciones": [
+    {
+      "id": "resumen",
+      "titulo": "RESUMEN",
+      "marca_pdf": "RESUMEN",
+      "avance": 1,
+      "skill": "planteamiento-y-objetivos",
+      "reglas": {
+        "max_palabras": 150,
+        "max_palabras_clave": 5,
+        "un_parrafo": true,
+        "tiempo_verbal": "pasado"
+      },
+      "guia": "Un solo párrafo de 150 palabras como máximo con objetivo, metodología y resultados; en pasado; interlineado sencillo. Palabras clave: máximo cinco, separadas por comas."
+    },
+    {
+      "id": "abstract",
+      "titulo": "ABSTRACT",
+      "marca_pdf": "ABSTRACT",
+      "avance": 1,
+      "skill": "planteamiento-y-objetivos",
+      "guia": "Traducción del Resumen al inglés y Keywords."
+    },
+    {
+      "id": "1",
+      "titulo": "Introducción",
+      "marca_pdf": "1. Introducción",
+      "nivel": 1,
+      "avance": 1
+    },
+    {
+      "id": "1.1",
+      "titulo": "Descripción",
+      "marca_pdf": "1.1 Descripción",
+      "nivel": 2,
+      "avance": 1,
+      "min_paginas": 2,
+      "skill": "planteamiento-y-objetivos",
+      "guia": "Contexto, necesidad, causas y efectos, antecedentes con fuentes. Justificación: ¿qué tan conveniente es?, ¿para qué sirve?, ¿ayudará a resolver un problema real?, ¿quiénes se benefician?"
+    },
+    {
+      "id": "1.2",
+      "titulo": "Propósito del caso",
+      "marca_pdf": "1.2 Propósito del caso",
+      "nivel": 2,
+      "avance": 1,
+      "min_paginas": 1,
+      "skill": "planteamiento-y-objetivos",
+      "guia": "Objetivo general y específicos; delimitación con ¿Qué? (verbo en infinitivo), ¿Cómo? y ¿Para qué?"
+    },
+    {
+      "id": "1.3",
+      "titulo": "Base conceptual",
+      "marca_pdf": "1.3 Base conceptual",
+      "nivel": 2,
+      "avance": 1,
+      "min_paginas": 3,
+      "skill": "trabajos-previos",
+      "guia": "Supuestos epistemológicos, unidad de análisis y trabajo práctico; de la teoría general a la sustantiva y a los resultados empíricos precedentes, con posición crítica. Mencionar y comparar al menos 10 trabajos previos. Responder en prosa las preguntas de «Está relacionado»."
+    },
+    {
+      "id": "2",
+      "titulo": "Análisis del caso",
+      "marca_pdf": "2. Análisis del caso",
+      "nivel": 1,
+      "avance": 2
+    },
+    {
+      "id": "2.1",
+      "titulo": "Requerimientos",
+      "marca_pdf": "2.1 Requerimientos",
+      "nivel": 2,
+      "avance": 2,
+      "min_paginas": 3,
+      "skill": "analisis-requerimientos",
+      "guia": "Identificar y detallar alternativas; requerimientos funcionales y no funcionales; documentación de requisitos del producto."
+    },
+    {
+      "id": "3",
+      "titulo": "Diseño y desarrollo del trabajo práctico",
+      "marca_pdf": "3. Diseño y desarrollo",
+      "nivel": 1,
+      "avance": 2
+    },
+    {
+      "id": "3.1",
+      "titulo": "Metodología",
+      "marca_pdf": "3.1 Metodología",
+      "nivel": 2,
+      "avance": 2,
+      "min_paginas": 3,
+      "skill": "metodologia-desarrollo",
+      "guia": "Metodología o marcos de trabajo aplicados; sistematizar los entregables del proyecto."
+    },
+    {
+      "id": "3.2",
+      "titulo": "Diseño",
+      "marca_pdf": "3.2 Diseño",
+      "nivel": 2,
+      "avance": 2,
+      "min_paginas": 6,
+      "partes": [
+        {
+          "id": "3.2a",
+          "tema": "Tipo de arquitectura de la solución",
+          "min_paginas": 2,
+          "skill": "decision-arquitectura"
+        },
+        {
+          "id": "3.2b",
+          "tema": "Diagramas UML (secuencia, colaboración, estado, actividades) con su descripción, diagrama de flujo de trabajo y solución tecnológica",
+          "min_paginas": 2,
+          "skill": "diseno-uml-datos"
+        },
+        {
+          "id": "3.2c",
+          "tema": "Modelo entidad-relación con tablas y campos (o estructura/infraestructura en redes, IA o seguridad) y recursos: equipos, software y materiales",
+          "min_paginas": 2,
+          "skill": "diseno-uml-datos"
+        }
+      ]
+    },
+    {
+      "id": "3.3",
+      "titulo": "Desarrollo",
+      "marca_pdf": "3.3 Desarrollo",
+      "nivel": 2,
+      "avance": 2,
+      "min_paginas": 6,
+      "partes": [
+        {
+          "id": "3.3a",
+          "tema": "Tecnologías implementadas y herramientas empleadas",
+          "min_paginas": 2,
+          "skill": "seleccion-tecnologica"
+        },
+        {
+          "id": "3.3b",
+          "tema": "Código del front end con explicación de variables, estructuras y funcionamiento a manera de manual",
+          "min_paginas": 2,
+          "skill": "desarrollo-y-evidencias"
+        },
+        {
+          "id": "3.3c",
+          "tema": "Código parcial del back end y sus funciones principales, a manera de manual",
+          "min_paginas": 2,
+          "skill": "desarrollo-y-evidencias"
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "titulo": "Conclusiones y recomendaciones",
+      "marca_pdf": "4. Conclusiones y recomendaciones",
+      "nivel": 1,
+      "avance": 3,
+      "min_paginas": 1,
+      "skill": "conclusiones-recomendaciones",
+      "guia": "Síntesis de hallazgos en función de los objetivos; breves, precisas, consecuencia lógica de los resultados; recomendaciones y continuidad del trabajo."
+    },
+    {
+      "id": "referencias",
+      "titulo": "Referencias",
+      "marca_pdf": "Referencias",
+      "nivel": 1,
+      "avance": 1,
+      "skill": "trabajos-previos",
+      "guia": "APA 7 (o IEEE), mínimo 20 referencias de los últimos 5 años. Sin numeración automática en el título."
+    },
+    {
+      "id": "anexos",
+      "titulo": "Anexos",
+      "marca_pdf": "Anexos",
+      "nivel": 1,
+      "avance": 1,
+      "skill": "entrega-y-sustentacion",
+      "guia": "Tabla de actividades (Fecha | Actividades | Detalle adicional de cumplimiento | Evidencia) y tabla de videos."
+    },
+    {
+      "id": "anexo_academico",
+      "titulo": "Anexo de información académica",
+      "marca_pdf": "Anexo de información académica",
+      "nivel": 1,
+      "avance": 1,
+      "skill": "entrega-y-sustentacion",
+      "guia": "Áreas, título, asignaturas, innovación, producto desarrollado y contacto."
+    }
+  ],
+  "avances": {
+    "1": {
+      "nombre": "Avance 1",
+      "secciones": [
+        "resumen",
+        "abstract",
+        "1.1",
+        "1.2",
+        "1.3",
+        "referencias",
+        "anexos",
+        "anexo_academico"
+      ]
+    },
+    "2": {
+      "nombre": "Avance 2",
+      "secciones": [
+        "2.1",
+        "3.1",
+        "3.2",
+        "3.3"
+      ],
+      "incluye_anteriores": true
+    },
+    "3": {
+      "nombre": "Avance 3 / documento final",
+      "secciones": [
+        "4"
+      ],
+      "incluye_anteriores": true,
+      "entregables_carpeta": [
+        "Documento finalizado del trabajo final (PDF y Word)",
+        "Presentación del trabajo de titulación, una por cada estudiante",
+        "Video de la explicación práctica (aprox. 15 min entre los integrantes)",
+        "Trabajo práctico desarrollado (código y sistema)",
+        "Declaración de autoría (plantilla oficial)",
+        "Anexo de interacción con IA",
+        "Anexo de interacción con las docentes (fotografías)",
+        "Cédula de cada integrante",
+        "Fotografía vigente de cada integrante"
+      ],
+      "primera_pagina": "Integrantes del grupo y enlace de la carpeta del Drive del grupo",
+      "sin_marcadores_pendientes": true,
+      "nota": "UNEMI 2026 (Ingeniería en TI, tutora Peralta): la carpeta del grupo va en el Drive indicado por la tutora; en el aula virtual se sube solo el PDF del trabajo final. El plagio se evalúa en la tarea final 4.",
+      "rubrica_tutora": [
+        "Simplifica de forma correcta la investigación del caso práctico, describiendo la importancia del tema.",
+        "Explica de manera clara el propósito del caso según los objetivos de investigación y la problemática a resolver.",
+        "Describe claramente la base conceptual y compara trabajos o estudios similares.",
+        "Análisis del caso: sustenta la problemática y plantea alternativas tecnológicas evidenciando los requerimientos.",
+        "Diseño y desarrollo: establece y describe los métodos y técnicas aplicados; refiere desde el diseño la arquitectura; incluye diagrama de flujo de trabajo y plantea una solución tecnológica; especifica recursos (equipos, software, materiales); analiza las tecnologías empleadas y las tendencias actuales.",
+        "Conclusiones y recomendaciones: responde a los objetivos, mantiene objetividad, se sustenta con los datos; las recomendaciones sugieren cómo dar continuidad al caso o qué aspectos trabajar para completarlo o ampliarlo."
+      ]
+    }
+  },
+  "requisitos": {
+    "min_trabajos_previos": 10,
+    "min_referencias": 20,
+    "anios_referencias": 5,
+    "estilos_citas_admitidos": [
+      "APA 7",
+      "IEEE"
+    ],
+    "min_alternativas_solucion": 3,
+    "min_opciones_por_decision_tecnologica": 3,
+    "min_estilos_arquitectura": 3,
+    "preguntas_esta_relacionado": [
+      "¿Qué aporta de nuevo este trabajo?",
+      "¿Cuáles son los beneficios que este trabajo proporcionará?",
+      "¿Quiénes serán los beneficiarios?",
+      "¿Qué es lo que se prevé cambiar con el trabajo?",
+      "¿Cuál es su utilidad?",
+      "¿Ayudará a resolver algún problema o gama de problemas prácticos?",
+      "¿Cuáles son las asignaturas bases propios de la carrera que aportan a la ejecución del presente trabajo?"
+    ],
+    "preguntas_esta_relacionado_forma": "prosa",
+    "nota_preguntas": "Según el compendio de Redacción Técnica usado en la carrera, las preguntas se contestan en prosa dentro de 1.3 y la tabla de la plantilla se elimina.",
+    "uml_exigidos": [
+      "secuencia",
+      "colaboracion",
+      "estados",
+      "actividades",
+      "flujo_trabajo",
+      "entidad_relacion"
+    ],
+    "uml_recomendados": [
+      "casos_uso",
+      "arquitectura",
+      "despliegue"
+    ],
+    "anexo": {
+      "columnas": [
+        "Fecha",
+        "Actividades",
+        "Detalla adicional de cumplimiento",
+        "Evidencia de su trabajo"
+      ],
+      "min_actividades": 5,
+      "min_interacciones_tutor": 4,
+      "videos": [
+        "Video de presentación del proyecto",
+        "Video del avance",
+        "Video de explicación técnica"
+      ]
+    },
+    "anexo_academico_areas": [
+      "Inteligencia Artificial",
+      "Minería de datos",
+      "Redes",
+      "Seguridad Informática",
+      "Software"
+    ]
+  },
+  "entrega": {
+    "carpeta_raiz": "entregables",
+    "carpetas": [
+      {
+        "ruta": "AVANCES_TESIS/AVANCE_1",
+        "contenido": "Documento y PDF del Avance 1"
+      },
+      {
+        "ruta": "AVANCES_TESIS/AVANCE_2",
+        "contenido": "Documento y PDF del Avance 2"
+      },
+      {
+        "ruta": "AVANCES_TESIS/AVANCE_3",
+        "contenido": "Documento y PDF del Avance 3"
+      },
+      {
+        "ruta": "CODIGO_FUENTE",
+        "contenido": "Código fuente del prototipo (sin datos personales ni credenciales)"
+      },
+      {
+        "ruta": "DATA_UTILIZADA",
+        "contenido": "PDF de los artículos citados y datos públicos usados"
+      },
+      {
+        "ruta": "DIAGRAMAS",
+        "contenido": "Diagramas de desarrollo (fuente .mmd y PNG) y Diagramas_de_desarrollo.docx"
+      },
+      {
+        "ruta": "EVIDENCIAS-TUTORIAS",
+        "contenido": "Una carpeta por tutor con Evidencias_<fecha>.docx/pdf"
+      },
+      {
+        "ruta": "MATRIZ_AVANCES",
+        "contenido": "Informe_avance_N.xlsx con las matrices oficiales"
+      },
+      {
+        "ruta": "PROTOTIPO_FUNCIONAL",
+        "contenido": "Pruebas de funcionamiento.docx (Ord. | Función | Captura de pantalla)"
+      },
+      {
+        "ruta": "PROYECTO_FINAL_TESIS",
+        "contenido": "Documento final y su PDF"
+      },
+      {
+        "ruta": "VIDEOS_DESARROLLO",
+        "contenido": "Videos del desarrollo y de la explicación técnica"
+      },
+      {
+        "ruta": "VIDEOS_PRESENTACIÓN",
+        "contenido": "Video de presentación"
+      }
+    ]
+  },
+  "matrices_oficiales": [
+    {
+      "hoja": "1.1 Matriz de congruencia",
+      "columnas": [
+        "No.",
+        "Nombres del Equipo",
+        "Tema de Investigación",
+        "Preguntas",
+        "Respuestas",
+        "Pregunta(s) de investigación",
+        "Objetivo General",
+        "Objetivos Específicos",
+        "Hipótesis",
+        "Variables",
+        "Conceptualización",
+        "Dimensiones",
+        "Indicadores",
+        "Marco Teórico"
+      ]
+    },
+    {
+      "hoja": "2. Estado del Arte",
+      "columnas": [
+        "Nombre del estudiante",
+        "Nombre y Apellido(s) del (los) Autor(es)",
+        "Año de publicación / Fuente",
+        "Título del trabajo",
+        "Tipo de publicación",
+        "Palabras claves",
+        "Hallazgos",
+        "Cómo contribuye este trabajo a mi tesis",
+        "Link",
+        "DOI"
+      ]
+    },
+    {
+      "hoja": "3. Contexto",
+      "columnas": [
+        "No.",
+        "Nombre estudiante",
+        "Tema de Investigación",
+        "Propuesta nuevo tema de investigación",
+        "Dimensiones",
+        "Marco histórico",
+        "Temas a considerar para Marco Histórico",
+        "Marco teórico",
+        "Temas a considerar para marco conceptual",
+        "Marco Normativo Legal",
+        "Temas a considerar para Marco Legal",
+        "Estructura de capítulos"
+      ]
+    },
+    {
+      "hoja": "Lectura Publicaciones",
+      "columnas": [
+        "No",
+        "Estudiante",
+        "No",
+        "Título Artículo",
+        "Link",
+        "Palabras Clave",
+        "Resumen General",
+        "Aporta a la Tesis"
+      ],
+      "nota": "Registro semanal de lecturas."
+    }
+  ],
+  "tareas_seminario": {
+    "nota": "UNEMI 2026, Ingeniería en TI, Máster Espinoza (seminario de titulación). Entrega exclusivamente en PDF; en grupo todos suben el mismo archivo; sin prórroga.",
+    "tarea3": {
+      "nombre_archivo": "Apellido_Nombre_Tarea3_EstadoDelArte.pdf",
+      "base": "Tarea 2 con todas las correcciones",
+      "elementos": [
+        "Portada institucional",
+        "Título aprobado",
+        "Problema, preguntas, objetivos y justificación corregidos",
+        "Matriz de congruencia actualizada",
+        "Antecedentes internacionales",
+        "Antecedentes nacionales",
+        "Antecedentes locales, cuando existan",
+        "Estado del arte organizado por temas, variables o categorías",
+        "Contexto tecnológico, institucional o territorial",
+        "Bases teóricas relacionadas con el problema",
+        "Definición de términos relevantes",
+        "Comparación crítica de autores, métodos y resultados",
+        "Identificación del vacío de investigación",
+        "Metodología actualizada",
+        "Evidencia del uso de un gestor bibliográfico",
+        "Citas y referencias aplicadas correctamente",
+        "Enlace de la carpeta digital actualizada"
+      ],
+      "reglas": [
+        "Estado del arte por ejes, no resúmenes aislados: qué investigó, método, resultados y relación con el trabajo",
+        "Toda cita en referencias y toda referencia citada; estilo de la carrera (APA 7) uniforme",
+        "No inventar autores, títulos, revistas, DOI ni resultados; verificar cada fuente"
+      ]
+    },
+    "tarea4": {
+      "nombre_archivo": "Apellido_Nombre_Tarea4_CertificadoSimilitud.pdf",
+      "elementos": [
+        "Portada institucional",
+        "Datos de los autores",
+        "Título completo",
+        "Nombre del tutor",
+        "Resumen de las correcciones realizadas",
+        "Certificado o reporte oficial de similitud",
+        "Porcentaje total de similitud",
+        "Fecha del análisis",
+        "Sistema utilizado",
+        "Firma o validación del responsable",
+        "Capturas de las principales coincidencias",
+        "Declaración de que el documento analizado es la versión entregada",
+        "Enlace de la carpeta con el reporte completo y la versión corregida"
+      ],
+      "reglas": [
+        "Análisis sobre el documento completo y actualizado",
+        "No editar ni recortar el certificado"
+      ]
+    },
+    "rubrica": [
+      "Estructura y desarrollo del artículo científico (alto): cumple la estructura científica (título, resumen, introducción, metodología, resultados y conclusiones) con coherencia y claridad.",
+      "Análisis del tema y aplicación de arquitecturas de software (alto): análisis claro, aplica correctamente la arquitectura seleccionada y justifica la propuesta.",
+      "Presentación, normas APA y originalidad (uso de IA) (alto): documento bien redactado, cumple APA 7 y evidencia análisis propio con uso adecuado de IA."
+    ]
+  },
+  "sustentacion_final": {
+    "nota": "UNEMI 2026, Ingeniería en TI (Avance 4 / sustentación ante el tribunal). El dominio técnico profundo se demuestra antes, en el video técnico de 15-20 min (máx. 30); en la sustentación el tribunal solo pide la presentación de 5 diapositivas, una demostración de unos 5 minutos y algunas preguntas sencillas.",
+    "diapositivas": [
+      {
+        "n": 1,
+        "titulo": "Carátula",
+        "contenido": "Logo y datos de la universidad, facultad y carrera, título aprobado del trabajo, autores, tutores, lugar y fecha."
+      },
+      {
+        "n": 2,
+        "titulo": "Introducción y objetivo",
+        "contenido": "Problema en pocas palabras con un dato verificable, propósito social del caso y el objetivo general (con los específicos resumidos)."
+      },
+      {
+        "n": 3,
+        "titulo": "Diagrama del flujo de trabajo del sistema",
+        "contenido": "Diagrama de cómo fluye el sistema de punta a punta (flujo de trabajo: actores, procesos por lotes, sistema y decisiones), no el diagrama de clases ni el de despliegue."
+      },
+      {
+        "n": 4,
+        "titulo": "Propuesta práctica",
+        "contenido": "La solución implementada: componentes principales, capturas del sistema funcionando y las cifras clave de resultado."
+      },
+      {
+        "n": 5,
+        "titulo": "Conclusiones y recomendaciones",
+        "contenido": "Una conclusión por objetivo con su cifra y las recomendaciones de continuidad."
+      }
+    ],
+    "demostracion_min": 5,
+    "reglas": [
+      "Exactamente 5 diapositivas en este orden.",
+      "Portada con la paleta institucional; contenido con letra grande y una idea por diapositiva.",
+      "Las cifras salen de los artefactos del proyecto; ninguna inventada.",
+      "Sin mencionar IA como autora; la autoría es solo de los estudiantes."
+    ]
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "name": "asistente-investigacion-economia",
+  "displayName": "Asistente de Investigación Científica en la Economía",
+  "version": "1.3.1",
+  "description": "Trabajos académicos de Economía de punta a punta: lectura de la consigna y la rúbrica, búsqueda en Scopus por áreas de la economía (historia del pensamiento, micro, macro, costeo, metodología), selección con matriz de consistencia y PRISMA, RIS para Zotero, redacción en APA 7 con tono analítico, ejercicios con ecuaciones nativas de Word, datos de Ecuador (BCE, INEC, Banco Mundial), gráficos sin textos superpuestos, ensamblaje del Word sobre la plantilla del grupo, PDF y carpeta de evidencias para Drive; diapositivas con plantilla UNEMI e infografías con citas textuales verificadas.",
+  "author": {
+    "name": "Ethos IA (ETHOSLAB S.A.S.)"
+  },
+  "license": "MIT",
+  "keywords": [
+    "economia",
+    "investigacion",
+    "scopus",
+    "prisma",
+    "apa7",
+    "zotero",
+    "matriz-de-consistencia",
+    "unemi",
+    "historia-del-pensamiento-economico",
+    "microeconomia",
+    "macroeconomia",
+    "ecuador",
+    "sistema-de-costeo",
+    "algebra-lineal",
+    "vectores",
+    "espacios-vectoriales",
+    "punto-de-equilibrio",
+    "abc",
+    "diapositivas",
+    "infografia",
+    "citas-textuales",
+    "abm",
+    "pedido-especial",
+    "orden-de-produccion"
+  ],
+  "userConfig": {
+    "elsevier_api_key": {
+      "type": "string",
+      "title": "Clave de la API de Elsevier (Scopus)",
+      "description": "Clave personal gratuita para uso académico no comercial. Se obtiene en https://dev.elsevier.com con el correo institucional. Si ya la tienes en la variable de entorno SCOPUS_API_KEY, puedes dejarla vacía.",
+      "sensitive": true
+    },
+    "elsevier_insttoken": {
+      "type": "string",
+      "title": "Token institucional de Elsevier (opcional)",
+      "description": "Solo si buscas fuera de la red de tu universidad; sin él la API entrega la vista STANDARD (sin resúmenes). Lo entrega la biblioteca o Elsevier.",
+      "sensitive": true
+    },
+    "correo_contacto": {
+      "type": "string",
+      "title": "Correo de contacto (opcional)",
+      "description": "Unpaywall lo exige y OpenAlex lo recomienda para identificar las consultas. Se envía solo a esos dos servicios."
+    }
+  }
+}

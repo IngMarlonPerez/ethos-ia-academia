@@ -1,0 +1,26 @@
+%% Secuencia del flujo principal. Derívala del código real: una línea por llamada
+%% entre archivos/servicios (ruta HTTP → servicio → validación → base de datos → respuesta).
+sequenceDiagram
+  autonumber
+  actor U as Usuario
+  participant F as Frontend (componente)
+  participant A as API (ruta /api/...)
+  participant S as Servicio de dominio
+  participant V as Validador / seguridad
+  participant B as Base de datos
+
+  U->>F: Acción en la interfaz
+  F->>A: POST /api/recurso (token)
+  A->>A: Verificar sesión y rol
+  A->>S: procesar(datos)
+  S->>V: validar(entrada)
+  alt Entrada inválida
+    V-->>A: error 422
+    A-->>F: mensaje comprensible
+  else Entrada válida
+    S->>B: consulta parametrizada
+    B-->>S: filas
+    S-->>A: resultado
+    A-->>F: JSON
+    F-->>U: tabla / gráfico
+  end

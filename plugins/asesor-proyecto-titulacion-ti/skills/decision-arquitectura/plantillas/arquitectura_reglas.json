@@ -1,0 +1,24 @@
+{
+  "_ayuda": "Reglas verificables de la arquitectura elegida (salen del ADR). Rutas relativas a la raíz del repositorio de código. EJEMPLO para «cliente-servidor desacoplado (SPA + API REST) con backend en capas».",
+  "adr": "decisiones/adr/ADR-00X-estilo_de_arquitectura.md",
+  "estilo_esperado": "cliente-servidor desacoplado",
+  "desplegables": {"min": 2, "max": 2},
+  "sin_bd_en_frontend": true,
+  "componentes": {
+    "cliente": ["src"],
+    "api": ["backend/api", "backend/main.py"],
+    "dominio": ["backend/core", "backend/ml"],
+    "datos": ["backend/etl", "backend/db"]
+  },
+  "dependencias_prohibidas": [
+    ["cliente", "datos"],
+    ["cliente", "dominio"],
+    ["datos", "api"],
+    ["dominio", "api"]
+  ],
+  "patrones_prohibidos": [
+    {"componente": "cliente", "patrones": ["(?i)\\bSELECT\\s+.+\\s+FROM\\b", "(?i)password\\s*[:=]\\s*['\"][^'\"]{4,}"],
+     "motivo": "el cliente no arma SQL ni guarda contraseñas"}
+  ],
+  "excepciones": []
+}

@@ -1,0 +1,45 @@
+{
+  "_ayuda": "Configuración de verificar_coherencia.py. Rutas relativas a la raíz del proyecto (donde está titulacion.json). Borra los ejemplos que no apliquen.",
+  "avance": 1,
+  "documento": "documento/Avance_1.docx",
+  "pdf": "documento/Avance_1.pdf",
+  "estilo_referencias": "Bibliography",
+  "prefijo_resumen": "",
+  "paginas_desde": null,
+  "rango_anios_referencias": null,
+  "cifras": [
+    {
+      "_ejemplo": true,
+      "nombre": "ROC-AUC en validación temporal",
+      "archivo": "../codigo/backend/ml/models/metrics.json",
+      "ruta": "validacion_temporal.roc_auc",
+      "decimales": 3,
+      "escala": 1,
+      "sufijo": "",
+      "en": ["resumen", "cuerpo"]
+    },
+    {
+      "_ejemplo": true,
+      "nombre": "Exactitud del conjunto dorado (última corrida completa)",
+      "archivo": "../codigo/backend/eval/resultados_*.json",
+      "filtro": {"resumen.preguntas": [">=", 40]},
+      "ruta": "resumen.exactitud",
+      "decimales": 1,
+      "escala": 100,
+      "sufijo": " %",
+      "en": ["resumen", "cuerpo"]
+    }
+  ],
+  "ignorar_citas": [],
+  "comprobar": {
+    "apa_plugin_investigacion": true,
+    "citas_propias": true,
+    "paginas_minimas": true,
+    "resumen": true,
+    "trabajos_previos": "literatura/trabajos_previos.json",
+    "requerimientos": "requerimientos/requerimientos.json",
+    "reglas_arquitectura": "decisiones/arquitectura_reglas.json",
+    "versiones_adr": "decisiones",
+    "matriz_literatura_codigo": null
+  }
+}

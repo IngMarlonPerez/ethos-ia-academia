@@ -1,0 +1,15 @@
+{
+  "name": "ethos-ia-academia",
+  "description": "Ethos IA Academia: metodologías de investigación científica, titulación de TI, economía, prácticas y creación de empresa, con herramientas verificables",
+  "owner": {
+    "name": "Ethos IA (ETHOSLAB S.A.S.)",
+    "email": "ethos.ia.ec@gmail.com"
+  },
+  "plugins": [
+    {"name": "asistente-investigacion-cientifica", "source": "./plugins/asistente-investigacion-cientifica", "description": "Revisión sistemática PRISMA 2020 con Scopus, OpenAlex y Unpaywall; las 4 matrices de revisión y redacción en APA 7"},
+    {"name": "asistente-investigacion-economia", "source": "./plugins/asistente-investigacion-economia", "description": "Trabajos académicos de Economía: consigna y rúbrica, literatura por áreas JEL, matriz de consistencia, ejercicios con ecuaciones de Word y datos de Ecuador"},
+    {"name": "asesor-proyecto-titulacion-ti", "source": "./plugins/asesor-proyecto-titulacion-ti", "description": "Proyecto de titulación de TI de punta a punta: trabajos previos, requerimientos, decisiones tecnológicas y de arquitectura, UML, documento, video técnico y sustentación"},
+    {"name": "practicas-ti-unemi", "source": "./plugins/practicas-ti-unemi", "description": "Prácticas de laboratorio de TI: lectura de la guía, mediciones de red, cifrado, Docker, evidencias e informe en Word con APA 7"},
+    {"name": "creacion-de-empresa", "source": "./plugins/creacion-de-empresa", "description": "Creación de una S.A.S. en Ecuador: marca, constitución, RUC, balance inicial, gobierno societario, sitio web y equipo"}
+  ]
+}

@@ -1,0 +1,10 @@
+%% Scrum: ciclo de sprints con sus entregables (reemplaza por los incrementos reales del proyecto).
+flowchart LR
+  PB[("Product backlog<br/>(historias de usuario)")] --> SP["Sprint planning"]
+  SP --> SB[("Sprint backlog")]
+  SB --> S["Sprint de 2 semanas<br/>(daily scrum)"]
+  S --> INC(["Incremento funcional<br/>+ pruebas en verde"])
+  INC --> REV["Sprint review<br/>(con el tutor / usuario)"]
+  REV --> RET["Retrospectiva"]
+  RET --> SP
+  REV -. "nuevas historias" .-> PB

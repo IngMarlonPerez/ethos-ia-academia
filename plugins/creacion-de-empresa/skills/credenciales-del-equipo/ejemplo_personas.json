@@ -1,0 +1,11 @@
+[
+  {
+    "id": "persona-ejemplo",
+    "nombre": ["NOMBRE APELLIDO", "SEGUNDO APELLIDO"],
+    "foto": "fotos/persona-ejemplo.jpg",
+    "cargo": "GERENTE GENERAL",
+    "etiqueta": "DIRECTIVO",
+    "filas": [["CARGO", "Gerente General"], ["EMPRESA", "Empresa Ejemplo S.A.S."], ["ÁREA", "Dirección general"], ["EMITIDA", "Octubre de 2026"]],
+    "url": "https://www.ejemplo.com/equipo/persona-ejemplo"
+  }
+]

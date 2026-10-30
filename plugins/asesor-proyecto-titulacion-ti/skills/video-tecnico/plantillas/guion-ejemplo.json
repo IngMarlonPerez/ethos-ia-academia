@@ -1,0 +1,218 @@
+{
+  "titulo": "Guion del video de explicación técnica · versión 2.0",
+  "proyecto": "Sistema web para el pronóstico de la demanda y el control de inventarios en microempresas comerciales (prototipo)",
+  "autores": [
+    "Valeria Mayra Cedeño Daquilema",
+    "Mateo Javier León Suárez"
+  ],
+  "palabras_por_minuto": 140,
+  "como_usar": "A diferencia de la versión 1, este video no recorre las pantallas del sistema: muestra el código en Visual Studio Code y explica, archivo por archivo, qué hace cada componente y por qué se decidió así. Cada segmento indica qué abrir, qué señalar y qué decir. Las cifras salen del documento del avance y del código; si cambian allí, se cambian aquí.",
+  "segmentos": [
+    {
+      "titulo": "1. Apertura y mapa del recorrido",
+      "quien": "Valeria",
+      "abrir": "Visual Studio Code con la carpeta CODIGO_FUENTE abierta y el explorador desplegado en la raíz.",
+      "senalar": "Señalar con el cursor las carpetas backend, frontend, scripts y evaluacion_modelos, y los archivos docker-compose.yml y package.json.",
+      "decir": [
+        "Buenas tardes, miembros del tribunal. Somos Valeria Cedeño y Mateo León, y en este video explicamos la parte técnica de nuestro trabajo de titulación: un prototipo de sistema web que pronostica la demanda y controla el inventario de una microempresa comercial comparando modelos de aprendizaje automático.",
+        "Antes de entrar al código conviene fijar una idea, porque ordena todo lo que viene: el sistema no elige un modelo de antemano, sino que compara cuatro candidatos con el mismo protocolo, recomienda el mejor para cada producto y, a partir de ese pronóstico, calcula cuánto reponer. Por eso el recorrido sigue el camino de los datos. Primero mostramos cómo se levanta el sistema; luego la arquitectura y por qué la elegimos; después el backend capa por capa, el módulo de aprendizaje automático, la reposición, el frontend y, al final, los resultados y sus límites. Todo lo que mostramos se ejecuta con datos simulados de setecientos treinta y un días, con semilla fija, de modo que cualquiera puede repetirlo y obtener las mismas cifras."
+      ]
+    },
+    {
+      "titulo": "2. De la literatura a las decisiones técnicas",
+      "quien": "Valeria",
+      "abrir": "Documento AVANCE_3.pdf, Tabla 3 (comparación crítica) y apartado 1.5.6 (vacíos).",
+      "senalar": "Recorrer las filas de la Tabla 3 mientras se nombran los autores; luego resaltar los tres vacíos.",
+      "decir": [
+        "Cada decisión técnica que van a ver tiene un origen en la revisión de la literatura. Ensafi y colaboradores compararon modelos clásicos y profundos sobre ventas minoristas, pero se detuvieron en el modelo, sin entregar el resultado a un usuario. Hobor y colaboradores, sobre cuarenta y seis mil series de un gran minorista, encontraron que XGBoost superaba a los métodos estadísticos y a las redes profundas; sin embargo, Chee y colaboradores mostraron que, con unas siete semanas de datos, la media móvil simple fue el mejor método sin aprendizaje automático. Padilha, en ventas de moda, y Krzyaniak, en la simulación del reabastecimiento, completan el cuadro: ninguna familia de modelos gana en todos los contextos.",
+        "De ahí salen tres decisiones concretas. La primera: comparar familias distintas, una regresión lineal interpretable, XGBoost por los árboles potenciados y Prophet por la descomposición estacional, y no apostar por una sola. La segunda: incluir la media móvil de siete días como candidata, porque es la regla que el propietario aplicaría a mano y, si un modelo no la supera, no debe llegar al usuario. La tercera, tomada de Bergsma: separar la estimación de la optimización, es decir, primero pronosticar y después aplicar las fórmulas clásicas del punto de reorden.",
+        "Esto responde a los tres vacíos que identificamos: el de integración, porque ningún estudio del corpus entrega a una microempresa un sistema que compare modelos y derive un punto de reorden; el de historia corta, porque no había evidencia con unos tres meses de ventas; y el de transparencia, porque las comparaciones rara vez muestran cuándo un modelo no supera a la regla simple. Con eso claro, Mateo explica cómo se traduce en software."
+      ]
+    },
+    {
+      "titulo": "3. Arranque reproducible: docker-compose.yml y dev.mjs",
+      "quien": "Mateo",
+      "abrir": "docker-compose.yml y luego scripts/dev.mjs.",
+      "senalar": "En docker-compose.yml señalar los servicios db, backend y frontend, los healthcheck y el command del backend. En dev.mjs, la lectura del .env y la búsqueda de puertos libres. Terminal: npm run dev.",
+      "decir": [
+        "Gracias, Valeria. El sistema completo se levanta con un solo comando, npm run dev, y eso responde a un requisito no funcional: que una microempresa sin personal de sistemas pueda reproducir el despliegue en un equipo modesto.",
+        "En el archivo docker-compose.yml hay tres servicios. El primero es db, un PostgreSQL dieciséis con un volumen persistente; es el único componente que guarda estado, así que los otros dos pueden recrearse sin perder información. El segundo es backend, y aquí conviene mirar su comando: primero ejecuta las migraciones con Alembic, luego siembra los datos de demostración de forma idempotente y solo entonces inicia el servidor Uvicorn. El tercero es frontend. Las dependencias están encadenadas con comprobaciones de salud: el backend espera a que la base acepte conexiones y el frontend espera a que el backend responda en la ruta de salud. Además, la base no publica ningún puerto hacia el equipo; el backend llega a ella por la red interna de Docker, lo que reduce la superficie expuesta y evita choques con otros PostgreSQL instalados.",
+        "El script dev.mjs, escrito en Node sin dependencias externas, lee el archivo de configuración una sola vez, genera secretos aleatorios la primera vez, comprueba que Docker esté activo, busca puertos libres y, finalmente, ejecuta docker compose up. Así, backend y frontend nunca quedan apuntando a puertos distintos."
+      ]
+    },
+    {
+      "titulo": "4. Arquitectura y por qué se eligió",
+      "quien": "Mateo",
+      "abrir": "Documento, Figura 7 (arquitectura en capas); luego frontend/next.config.js.",
+      "senalar": "En la figura, seguir con el cursor navegador → Next.js → FastAPI → PostgreSQL. En next.config.js, resaltar la función rewrites.",
+      "decir": [
+        "La arquitectura es cliente servidor en capas, con un frontend desacoplado que consume una API REST, es decir, una interfaz de programación basada en transferencia de estado representacional, y una base de datos relacional. La elegimos por tres necesidades del caso: que el módulo de aprendizaje automático, escrito en Python, conviva con una interfaz web moderna sin acoplar sus ciclos de cambio; que el propietario abra el sistema desde cualquier navegador, incluso el del teléfono, sin instalar nada; y que el despliegue sea reproducible en un solo equipo. Para un sistema de este alcance, con un equipo de desarrollo pequeño y un solo negocio usuario, una arquitectura distribuida añadiría complejidad operativa sin un beneficio que el caso necesite.",
+        "Esta arquitectura concreta las cuatro capas propuestas en el primer avance. Las páginas del frontend son la capa de interfaz; las rutas y los servicios del backend, la capa de servicios; la carpeta ml, la capa de modelado; y los modelos ORM con las migraciones, la capa de datos.",
+        "Un detalle importante está en next.config.js. La función rewrites reenvía al backend toda petición que empieza con la ruta api. Gracias a ese reenvío el navegador habla con un único origen: la cookie de sesión pertenece al mismo sitio, no hace falta abrir permisos entre dominios y basta publicar el frontend para que todo el sistema sea accesible."
+      ]
+    },
+    {
+      "titulo": "5. Backend: la regla de dependencia entre capas",
+      "quien": "Mateo",
+      "abrir": "backend/app/main.py, luego api/v1/ventas.py, services/ventas.py y repositories/productos.py.",
+      "senalar": "En main.py, los middlewares y la función de cabeceras de seguridad. Después seguir una venta: la ruta, la función registrar del servicio y obtener_bloqueado del repositorio (with_for_update).",
+      "decir": [
+        "El backend está escrito en Python con FastAPI. Lo elegimos porque valida automáticamente las entradas con Pydantic y genera la documentación OpenAPI sin trabajo adicional, y porque comparte el lenguaje con pandas, scikit-learn, XGBoost y Prophet, de modo que la API y el modelado viven en el mismo proceso sin traducir datos entre lenguajes.",
+        "En main.py se crea la aplicación, se registran los manejadores de errores, la compresión y una función que añade cabeceras de seguridad a cada respuesta, como la política de contenido y la prohibición de mostrar el sistema dentro de un marco ajeno.",
+        "La organización interna obedece a una regla de dependencia, y la mejor forma de verla es seguir una venta. La ruta, en la carpeta api, solo valida la entrada y delega. El servicio, en services/ventas.py, aplica las reglas de negocio: en la función registrar primero se lee el producto con bloqueo de fila, luego se comprueba que esté activo, que la fecha sea válida y que el stock alcance; el precio se toma del catálogo y nunca del cliente; se guarda la venta, se registra el movimiento en el kardex, se evalúan las alertas, se marca el pronóstico como desactualizado y se deja la huella en la auditoría, todo dentro de una misma transacción. Finalmente, el repositorio es el único que habla con la base: obtener_bloqueado ejecuta un SELECT FOR UPDATE, de modo que si dos ventas del mismo producto llegan al mismo tiempo, la segunda espera a que la primera confirme y el stock nunca queda negativo.",
+        "Gracias a esta separación, las reglas se prueban sin levantar la web y un endpoint nuevo solo toca su ruta, su esquema y su servicio."
+      ]
+    },
+    {
+      "titulo": "6. Datos: modelo relacional y migraciones",
+      "quien": "Valeria",
+      "abrir": "backend/app/models/ y backend/alembic/versions/.",
+      "senalar": "Abrir producto.py, venta.py e inventario.py; luego mostrar la lista de migraciones 0001 a 0004.",
+      "decir": [
+        "Para la capa de datos elegimos PostgreSQL porque el problema es transaccional: necesitamos integridad referencial entre productos, ventas y movimientos, y bloqueo de filas para que el inventario sea exacto. El esquema tiene nueve entidades definidas con SQLAlchemy: usuarios, productos, ventas, movimientos de inventario, alertas, ejecuciones de pronóstico, predicciones, importaciones y auditoría.",
+        "La decisión de diseño más importante aquí es que el kardex es la fuente de verdad del inventario: cada entrada o salida queda registrada como un movimiento y una venta nunca se borra, sino que se anula con un movimiento compensatorio y un motivo. El esquema evoluciona mediante cuatro migraciones versionadas con Alembic, de la cero cero cero uno a la cero cero cero cuatro, que se aplican solas en cada arranque."
+      ]
+    },
+    {
+      "titulo": "7. Seguridad",
+      "quien": "Valeria",
+      "abrir": "backend/app/core/seguridad.py y frontend/app/lib/api.ts.",
+      "senalar": "En seguridad.py: CryptContext con bcrypt, crear_token, la verificación de X-Requested-With y requiere_rol. En api.ts: la línea que añade X-Requested-With y credentials include.",
+      "decir": [
+        "La seguridad se resuelve en el servidor. Las contraseñas se guardan como resumen bcrypt. Al iniciar sesión se emite un token JWT, es decir, un token web firmado, con algoritmo HS256 y sesenta minutos de vigencia, que viaja en una cookie HttpOnly: el código de la página no puede leerla, aunque existiera una inyección de scripts.",
+        "Como el navegador envía esa cookie automáticamente, toda operación de escritura exige además la cabecera X-Requested-With, que un formulario de otro sitio no puede añadir; así se evita la falsificación de solicitudes. Cada ruta declara con requiere_rol qué roles admite, y responde cuatrocientos uno si no hay sesión y cuatrocientos tres si el rol no corresponde. A esto se suma un límite de cinco intentos de ingreso por minuto.",
+        "En el frontend, api.ts es el único cliente HTTP: añade esa cabecera y envía la cookie. Y la matriz de permisos.ts solo decide qué botones se muestran; la autorización que cuenta es siempre la del backend."
+      ]
+    },
+    {
+      "titulo": "8. Módulo de aprendizaje automático: variables y validación",
+      "quien": "Mateo",
+      "abrir": "backend/app/ml/features.py y luego ml/comparador.py.",
+      "senalar": "En features.py: LAGS, ROLLING_WINDOWS, FEATURE_COLUMNS y el shift(1) antes del rolling. En comparador.py: ENTRENADORES, dias_minimos, clave_orden y el ThreadPoolExecutor.",
+      "decir": [
+        "Llegamos al núcleo del trabajo. La carpeta ml no conoce ni FastAPI ni la base de datos: recibe y devuelve tablas de pandas, y por eso se prueba de forma aislada.",
+        "En features.py se construyen dieciocho variables a partir de la demanda diaria: variables de calendario, como el día de la semana y el mes con su codificación seno y coseno, para que diciembre y enero se vean como meses consecutivos; rezagos de uno, siete y catorce días; y medias y desviaciones móviles de siete, catorce y treinta días. Aquí hay una línea que conviene señalar: antes de calcular cada media móvil se desplaza la serie un día. Sin ese desplazamiento, la media del día t incluiría la venta del propio día t, y el modelo aprendería con información que en la realidad todavía no existe; eso es lo que se llama fuga de información.",
+        "Por la misma razón, la validación es cronológica, con origen móvil. Se reservan como prueba los últimos catorce días, se entrena solo con lo anterior, luego el origen retrocede catorce días y se repite hasta completar tres pliegues; las métricas finales son el promedio de los tres. Dividir los datos al azar habría permitido entrenar con el futuro.",
+        "En comparador.py están los cuatro entrenadores: regresión lineal, XGBoost, Prophet y la media móvil de referencia. La función dias_minimos explica por qué se necesitan ochenta y seis días: catorce del rezago más largo, tres pliegues de catorce y treinta de entrenamiento mínimo. Los cuatro modelos se entrenan en paralelo con un grupo de hilos, porque XGBoost y el motor de Prophet liberan el bloqueo del intérprete de Python; así el tiempo total es el del modelo más lento y la comparación tarda entre uno coma cinco y dos coma un segundos por producto. Por último, clave_orden ordena por el mayor R cuadrado y, en caso de empate, por el menor error absoluto medio."
+      ]
+    },
+    {
+      "titulo": "9. Los cuatro modelos y las métricas",
+      "quien": "Mateo",
+      "abrir": "backend/app/ml/modelos/: regresion_lineal.py, xgboost_modelo.py, prophet_modelo.py, referencia.py y comun.py.",
+      "senalar": "En xgboost_modelo.py, la GRILLA de seis combinaciones y random_state=42. En comun.py, Z_INTERVALO = 1.645 y agregar_intervalo.",
+      "decir": [
+        "Cada modelo vive en su propio archivo y todos devuelven el mismo formato, de modo que agregar un quinto solo exige un archivo nuevo y una línea en el comparador. La regresión lineal usa mínimos cuadrados sobre las dieciocho variables y es la línea base interpretable. XGBoost usa las mismas variables y prueba una rejilla de seis combinaciones, con profundidad tres, cuatro o seis y cien o doscientos árboles, con semilla cuarenta y dos, y conserva la de menor error. Prophet solo necesita la fecha y la cantidad, porque modela internamente la tendencia y las estacionalidades. Y la media móvil repite el promedio de la última semana.",
+        "Las métricas son cuatro. El MAE, error absoluto medio, dice en cuántas unidades por día nos equivocamos en promedio. El RMSE, raíz del error cuadrático medio, penaliza más los errores grandes. El R cuadrado mide qué parte de la variabilidad explica el modelo frente a predecir siempre la media; si es negativo, el modelo lo hace peor que esa media, y el sistema lo muestra tal cual en lugar de ocultarlo. Y el MAPE, error porcentual, se calcula solo en los días con ventas, porque con demanda cero se vuelve indefinido.",
+        "En comun.py se calcula además una banda de incertidumbre de más y menos uno coma seiscientos cuarenta y cinco desviaciones de los residuos de validación, cercana a noventa por ciento si los residuos fueran normales. La presentamos como estimación, no como garantía."
+      ]
+    },
+    {
+      "titulo": "10. Del pronóstico a la reposición",
+      "quien": "Valeria",
+      "abrir": "backend/app/ml/reposicion.py y services/pronostico.py.",
+      "senalar": "Las fórmulas del encabezado de reposicion.py, NIVEL_SERVICIO y FACTOR_Z, clasificar_abc; en pronostico.py, programar_recalculo.",
+      "decir": [
+        "Con el pronóstico del modelo recomendado se calcula la reposición. El stock de seguridad es z por la desviación por la raíz del tiempo de entrega; el punto de reorden es la demanda esperada durante ese tiempo más el stock de seguridad; y la cantidad sugerida es lo que falta para llegar al nivel objetivo, redondeado al lote de compra. El factor z depende de la clasificación ABC: los productos que acumulan hasta el ochenta por ciento de los ingresos son clase A, con noventa y cinco por ciento de nivel de servicio; hasta el noventa y cinco por ciento, clase B, con noventa; y el resto, clase C, con ochenta y cinco.",
+        "Para que esto sea viable en la operación diaria, abrir un producto no reentrena los modelos: se sirve la última ejecución guardada. Una venta marca el pronóstico como desactualizado y se recalcula en segundo plano, como máximo una vez cada diez minutos por producto."
+      ]
+    },
+    {
+      "titulo": "11. Frontend",
+      "quien": "Mateo",
+      "abrir": "frontend/app: (publico), (sistema), components/RequireAuth.tsx, lib/api.ts; luego el navegador en el panel y en un pronóstico.",
+      "senalar": "Árbol de carpetas; después, en el navegador, la pantalla de pronóstico de un producto con la tabla de los cuatro modelos y la gráfica con la banda.",
+      "decir": [
+        "El frontend usa Next.js catorce con React y TypeScript, Tailwind para los estilos y Recharts para las gráficas. Elegimos Next.js porque, además del enrutamiento por carpetas, nos da el reenvío al backend que ya vimos. Las rutas se dividen en dos grupos: público, con la portada y el acceso, y sistema, que solo se abre con sesión gracias al componente RequireAuth. En la pantalla de pronóstico, el usuario ve la tabla de los cuatro modelos con sus métricas, el modelo recomendado y la gráfica con la banda de incertidumbre; es decir, la comparación deja de ser un ejercicio de laboratorio y se vuelve una función del producto."
+      ]
+    },
+    {
+      "titulo": "12. Pruebas, resultados y límites",
+      "quien": "Valeria y Mateo",
+      "abrir": "backend/tests/ (unit e integration), terminal con npm test; documento, Tablas 22 y 23 y Figura 19.",
+      "senalar": "Ejecutar npm test y mostrar el resumen; luego las tablas de resultados.",
+      "decir": [
+        "(Mateo) La verificación se apoya en pruebas automáticas con pytest: unitarias para las funciones puras, como las variables, las fórmulas de reposición y la clasificación ABC, y de integración que ejercitan la API completa sobre una base en memoria: autenticación, protección contra falsificación de solicitudes, roles, ventas, kardex, alertas, importación y pronóstico. Las setenta y ocho pruebas se superan, y se cumplen los cuatro criterios de aceptación del documento.",
+        "(Valeria) Con los setecientos treinta y un días, ningún modelo ganó en todos los productos: XGBoost fue recomendado en tres, Prophet en tres y la regresión lineal en dos, y los tres superaron a la media móvil en los ocho productos, con reducciones del error de seis coma cuatro a cuarenta y tres coma uno por ciento. Eso confirma la premisa: la comparación debe ser una función del sistema.",
+        "Atendiendo la recomendación de la tutora, repetimos la evaluación con ventanas de tres meses. Ahí la regresión y Prophet empeoran de forma marcada, XGBoost queda al nivel de la referencia y Holt-Winters, que añadimos como referencia externa, fue el único que mejoró de manera consistente. Lo importante es que el sistema, al incluir la media móvil como candidata, nunca recomendó a los modelos inestables: la referencia trivial actuó como red de seguridad.",
+        "Declaramos también los límites: los datos son simulados con un conteo de Poisson, lo que explica los R cuadrado bajos; XGBoost elige su configuración en los mismos pliegues que se informan; y no se aplicó una prueba estadística pareada. La validación con ventas reales es la siguiente etapa, y el sistema ya la permite mediante la importación de un archivo CSV o de Excel."
+      ]
+    },
+    {
+      "titulo": "13. Cierre",
+      "quien": "Mateo",
+      "abrir": "Volver a VS Code con el árbol completo.",
+      "senalar": "Sin cambios en pantalla.",
+      "decir": [
+        "En resumen, cada pieza responde a una decisión: la literatura nos dijo que ningún modelo gana siempre, y por eso el sistema compara cuatro con un protocolo cronológico sin fuga de información; el caso nos pidió algo liviano y reproducible, y por eso la arquitectura en capas con un solo comando; y el inventario exige exactitud, y por eso el kardex, las transacciones y el bloqueo de filas. Muchas gracias por su atención."
+      ]
+    }
+  ],
+  "glosario": [
+    {
+      "termino": "API REST",
+      "definicion": "Interfaz de programación basada en transferencia de estado representacional: recursos con rutas y métodos HTTP."
+    },
+    {
+      "termino": "ORM",
+      "definicion": "Mapeo objeto-relacional: clases de Python que representan las tablas (SQLAlchemy)."
+    },
+    {
+      "termino": "JWT",
+      "definicion": "Token web JSON firmado que identifica la sesión."
+    },
+    {
+      "termino": "Fuga de información",
+      "definicion": "Usar en el entrenamiento datos que en la realidad aún no existen."
+    },
+    {
+      "termino": "Validación cronológica con origen móvil",
+      "definicion": "Probar siempre sobre días posteriores a los de entrenamiento, en varios pliegues."
+    },
+    {
+      "termino": "MAE / RMSE / R² / MAPE",
+      "definicion": "Error absoluto medio / raíz del error cuadrático medio / coeficiente de determinación / error porcentual absoluto medio."
+    },
+    {
+      "termino": "Punto de reorden",
+      "definicion": "Nivel de stock en el que conviene pedir: demanda en el tiempo de entrega más stock de seguridad."
+    },
+    {
+      "termino": "Kardex",
+      "definicion": "Registro de cada movimiento de inventario, fuente de verdad del stock."
+    }
+  ],
+  "preguntas": [
+    {
+      "pregunta": "¿Por qué no eligieron un solo modelo?",
+      "respuesta": "Porque la literatura muestra que ninguna familia gana siempre y los resultados lo confirmaron: con 731 días ganó XGBoost en tres productos, Prophet en tres y la regresión en dos."
+    },
+    {
+      "pregunta": "¿Cómo evitaron la fuga de información?",
+      "respuesta": "Con variables construidas solo con el pasado (el desplazamiento de un día antes de las medias móviles) y validación cronológica con tres pliegues de 14 días."
+    },
+    {
+      "pregunta": "¿Por qué una arquitectura en capas y no distribuida?",
+      "respuesta": "Por el alcance: un solo negocio, un equipo pequeño y despliegue en un equipo modesto; la separación por capas da mantenibilidad sin el costo operativo de varios servicios."
+    },
+    {
+      "pregunta": "¿Qué pasa si dos usuarios venden el mismo producto a la vez?",
+      "respuesta": "El repositorio bloquea la fila con SELECT FOR UPDATE; la segunda venta espera y el stock nunca queda negativo."
+    },
+    {
+      "pregunta": "¿Por qué los R² son bajos o negativos?",
+      "respuesta": "La demanda simulada es un conteo de Poisson con medias de 2 a 7 unidades; el ruido domina y cualquier modelo explica poco. El sistema lo muestra en lugar de ocultarlo."
+    },
+    {
+      "pregunta": "¿Qué pasa con solo tres meses de historia?",
+      "respuesta": "La regresión y Prophet empeoran; el sistema recomendó la media móvil en cinco productos y XGBoost en tres, nunca los inestables."
+    }
+  ],
+  "antes_de_grabar": [
+    "Sistema levantado y sesión iniciada como administrador.",
+    "VS Code con letra ampliada (Ctrl + +) y el explorador visible.",
+    "Pestañas abiertas en el orden del guion.",
+    "Documento del avance abierto en las tablas y figuras que se citan.",
+    "Terminal lista para correr las pruebas."
+  ]
+}

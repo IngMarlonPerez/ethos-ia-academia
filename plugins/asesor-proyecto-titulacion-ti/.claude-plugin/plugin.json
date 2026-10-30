@@ -1,0 +1,27 @@
+{
+  "name": "asesor-proyecto-titulacion-ti",
+  "displayName": "Asesor de Proyecto de Titulación de TI",
+  "version": "1.11.0",
+  "description": "Pipeline completo para proyectos de titulación de Tecnologías de la Información, con controles de calidad por etapa: estructura y perfil institucional (UNEMI por defecto), planteamiento y objetivos con Bloom, al menos 10 trabajos previos leídos en texto completo (Scopus y PRISMA vía el Asistente de Investigación Científica), requerimientos trazables, selección tecnológica y de arquitectura con al menos 3 opciones comparadas y verificación de la arquitectura en el código, protección de datos personales, metodología, UML y diccionario de datos, código con resultados reales, documento Word generado desde la plantilla oficial, verificación de coherencia, atención a la retroalimentación del tutor, demo y entrega; además, organización del repositorio por capas, uso ético de la IA sin autoría y publicación limpia en GitHub; protección del Word con copias versionadas y huella de portada, encabezados y pies; diapositivas y póster A0 desde JSON, presentación y guion de cada avance sobre la presentación anterior, y simulacro de tribunal; guía del video técnico con auditoría y limpieza del código, recorridos guiados en VS Code (CodeTour), guion técnico del video centrado en el código con tiempos por palabras en Word y PDF y actualización desde GitHub entre avances; manual de arquitectura para el tribunal con componentes, archivos clave y recorrido de la demostración, generado proyecto por proyecto.",
+  "author": {
+    "name": "Ethos IA (ETHOSLAB S.A.S.)"
+  },
+  "license": "MIT",
+  "keywords": [
+    "adr",
+    "apa7",
+    "arquitectura-de-software",
+    "github",
+    "requerimientos",
+    "scopus",
+    "tecnologias-de-la-informacion",
+    "tesis",
+    "titulacion",
+    "uml",
+    "unemi",
+    "uso-etico-ia"
+  ],
+  "dependencies": [
+    "asistente-investigacion-cientifica"
+  ]
+}

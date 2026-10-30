@@ -1,0 +1,61 @@
+{
+  "_ayuda": "Tabla de trabajos previos del proyecto (sección 1.3). Un objeto por artículo LEÍDO COMPLETO. La llenas con las fichas del agente lector-critico. La validan tabla_trabajos_previos.py y verificar_coherencia.py.",
+  "preguntas": {
+    "Q1": "¿Qué problema resolvió y con qué técnica o modelo?",
+    "Q2": "¿Qué arquitectura y qué tecnologías (lenguaje, framework, base de datos) usó?",
+    "Q3": "¿Cómo validó los resultados y con qué métricas?",
+    "Q4": "¿Qué limitación declara o se le puede señalar?"
+  },
+  "trabajos": [
+    {
+      "_ejemplo": true,
+      "id": "TP01",
+      "cita": "Apellido et al. (2025)",
+      "referencia_apa": "Apellido, A., Apellido, B., & Apellido, C. (2025). Título del artículo. Revista, 12(3), 45–67. https://doi.org/10.xxxx/xxxxx",
+      "doi": "10.xxxx/xxxxx",
+      "titulo": "Título del artículo",
+      "revista": "Revista",
+      "anio": 2025,
+      "palabras_clave": "",
+      "pais": "",
+      "fuente": "Scopus",
+      "busqueda": "B1",
+      "problema": "",
+      "tecnica": "",
+      "tecnologias": {
+        "lenguaje": "",
+        "frameworks": "",
+        "base_datos": "",
+        "otras": ""
+      },
+      "arquitectura": "",
+      "datos_muestra": "",
+      "validacion_metricas": "",
+      "resultado": "",
+      "limitacion": "",
+      "relacion_con_este_trabajo": "",
+      "evidencia": [
+        {
+          "texto": "cita textual en el idioma original",
+          "pagina": "p. 7"
+        }
+      ],
+      "ficha": "literatura/B1_tema/fichas/Apellido_2025.md",
+      "texto_completo_leido": true,
+      "puntajes": {
+        "Q1": 2,
+        "Q2": 1,
+        "Q3": 2,
+        "Q4": 1
+      },
+      "decision": "Incluido"
+    }
+  ],
+  "presente_trabajo": {
+    "problema_tecnica": "Problema y técnica del proyecto propio",
+    "tecnologias": "Lenguaje, frameworks y base de datos elegidos (etapa 4)",
+    "arquitectura": "Estilo elegido (etapa 5)",
+    "validacion_resultado": "Esquema de validación y resultados reales",
+    "limitacion": "Limitación declarada del proyecto"
+  }
+}

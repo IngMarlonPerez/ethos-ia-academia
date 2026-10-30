@@ -1,0 +1,886 @@
+{
+ "_comentario": "Ejemplo real: VicMar (dos autores, UNEMI, 2026). Cifras y líneas verificadas en el repositorio el 30/10/2026.",
+ "raiz": "C:/VIcMar Prevención del Abandono/Codigo-Fuente_Trabajo-practico/Codigo-Fuente",
+ "salida": "C:/VIcMar Prevención del Abandono/Guia_Arquitectura_VicMar.docx",
+ "autores": [
+  "Andrés Felipe Mora Castro",
+  "Lucía Fernanda Ortiz Vega"
+ ],
+ "color_principal": "002E45",
+ "color_acento": "FF6900",
+ "portada": {
+  "logo": ".github/assets/logo-vicmar.png",
+  "titulo": "VicMar · Guía de arquitectura",
+  "subtitulo": "Componentes, archivos y recorrido para la demostración técnica",
+  "lineas": [
+   "Sistema web de alerta temprana del abandono estudiantil",
+   "Andrés Felipe Mora Castro · Lucía Fernanda Ortiz Vega",
+   "Universidad Estatal de Milagro · 2026",
+   "Repositorio: github.com/usuario/sistema-prediccion"
+  ],
+  "nota": "Todas las rutas son relativas a la raíz del repositorio. Los números de línea, cifras y nombres se tomaron del código y de backend/ml/modelos/*/metricas.json (rama main, 30/10/2026)."
+ },
+ "bloques": [
+  {
+   "tipo": "h1",
+   "texto": "1. La arquitectura en una frase"
+  },
+  {
+   "tipo": "p",
+   "texto": "VicMar es una arquitectura **cliente-servidor desacoplada**: una aplicación web de una sola página (React) habla por HTTP con una **API REST en capas** (FastAPI), que lee un **almacén de datos en estrella** (SQL Server 2022) donde cada institución queda aislada **en el propio motor de base de datos**. Los procesos por lotes (ETL, entrenamiento y calificación) corren aparte y dejan sus resultados en el almacén y en backend/ml/modelos. La decisión está registrada en documentacion/decisiones/DT-06_arquitectura.json y en el ADR-006."
+  },
+  {
+   "tipo": "imagen",
+   "ruta": "documentacion/diagramas/av2_arquitectura.png",
+   "ancho": 15.5,
+   "pie": "Figura 1. Arquitectura del sistema VicMar."
+  },
+  {
+   "tipo": "h2",
+   "texto": "Las cuatro capas y sus reglas"
+  },
+  {
+   "tipo": "tabla",
+   "encabezado": [
+    "Capa",
+    "Tecnología",
+    "Carpeta",
+    "Responsabilidad"
+   ],
+   "filas": [
+    [
+     "Presentación",
+     "React 18 + TypeScript + Vite + Tailwind",
+     "`frontend/src/`",
+     "Pantallas, navegación por rol, gráficos"
+    ],
+    [
+     "Servicio (API)",
+     "FastAPI 0.141 + Uvicorn",
+     "`backend/api/` + `backend/main.py`",
+     "26 servicios REST bajo /api, autorización en cada petición"
+    ],
+    [
+     "Dominio",
+     "Python: scikit-learn, LightGBM, SHAP, sqlglot",
+     "`backend/core/`, `ml/`, `nl2sql/`, `etl/`",
+     "Seguridad, modelo, consulta conversacional, ETL"
+    ],
+    [
+     "Datos",
+     "SQL Server 2022 (Docker)",
+     "`base_de_datos/`",
+     "Esquema estrella, vistas VIS_*, procedimientos, cuentas"
+    ]
+   ],
+   "anchos": [
+    2.6,
+    4.2,
+    4.2,
+    5.6
+   ]
+  },
+  {
+   "tipo": "p",
+   "texto": "Reglas de dependencia que el tribunal puede preguntar:"
+  },
+  {
+   "tipo": "vineta",
+   "texto": "El **frontend nunca toca la base de datos**: solo llama a /api por HTTP."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**api/** usa core/, ml/ y nl2sql/; ninguna capa de dominio importa las rutas."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "Toda lectura de la API usa la cuenta **chat_reader**, que solo puede leer las vistas VIS_* de la institución activa."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "El seguimiento escribe con **app_seguimiento**, que solo ejecuta dos procedimientos. La cuenta de administración la usan solo los procesos por lotes."
+  },
+  {
+   "tipo": "h1",
+   "texto": "2. Mapa de carpetas y archivos clave"
+  },
+  {
+   "tipo": "codigo",
+   "texto": "(raíz)\n├── package.json            npm run dev → scripts/dev.mjs (arranque en Docker)\n├── docker-compose.yml      sqlserver (vicmar-sqlserver), api, web\n├── scripts/\n│   ├── dev.mjs             arranque de un comando: Docker, puertos libres, carga inicial\n│   ├── iniciar.mjs         arranque sin contenedores (npm run dev:local)\n│   └── reconstruir_sistema.bat   pipeline completo en Windows\n├── frontend/               PRESENTACIÓN\n│   ├── Dockerfile          node:22-alpine, Vite en el puerto 3000\n│   ├── vite.config.ts      proxy /api → API (VITE_BACKEND_URL)\n│   └── src/\n│       ├── App.tsx         rutas protegidas por capacidad\n│       ├── paginas/        Panel, Estudiantes, Ficha, Seguimiento, Consulta, Carreras,\n│       │                   Referentes, CalidadModelo, Reportes, Perfil, admin/\n│       ├── componentes/    layout, ui, graficos, marca, seguimiento\n│       └── lib/            api.ts, sesion.tsx, permisos.ts, formato.ts, tema.ts\n├── backend/                SERVIDOR\n│   ├── Dockerfile          python:3.13 + controlador ODBC 18\n│   ├── main.py             crea la app, CORS, /api/salud y monta 10 routers\n│   ├── api/                sesion, panel, estudiantes, seguimiento, consulta, carreras,\n│   │                       referentes, modelo, reportes, admin\n│   ├── core/               config, db, seguridad, usuarios, privacidad, auditoria, reportes\n│   ├── ml/                 caracteristicas, entrenar, calibracion, calificar, servicio,\n│   │                       explicacion, simulacion, segmentar, exploracion, reporte_validacion\n│   │   └── modelos/<INSTITUCION>/   modelo_abandono.joblib + metricas.json y reportes\n│   ├── nl2sql/             motor, guardarrailes, enrutador, generador, validador,\n│   │                       proveedores, redactor, catalogo_metricas.json\n│   ├── etl/                perfiles, etl_academico, etl_referentes\n│   ├── scripts/pipeline.py orquestador de los 15 pasos por lotes\n│   ├── eval/               conjunto dorado de la consulta conversacional\n│   └── tests/              pytest (153 unitarias + 8 de integración)\n├── base_de_datos/\n│   ├── crear_almacen_academico.sql   estrella, VIS_*, procedimientos, cuentas\n│   └── datos_de_prueba/    UNEMI_PRUEBAS sintético (semilla 20260909)\n└── documentacion/          decisiones (ADR), diagramas, capturas, manuales"
+  },
+  {
+   "tipo": "h1",
+   "texto": "3. Capa de presentación (frontend)"
+  },
+  {
+   "tipo": "p",
+   "texto": "Aplicación de una sola página. **frontend/src/App.tsx** define las rutas y envuelve cada pantalla en **Protegida requiere=\"capacidad\"**: si el rol no tiene la capacidad, la ruta no se muestra. Esto es solo comodidad visual: **la autorización real está en el backend** (sección 4.2)."
+  },
+  {
+   "tipo": "tabla",
+   "encabezado": [
+    "Ruta",
+    "Pantalla (archivo)",
+    "Capacidad"
+   ],
+   "filas": [
+    [
+     "/panel",
+     "`paginas/Panel.tsx`",
+     "ver_panel"
+    ],
+    [
+     "/estudiantes",
+     "`paginas/Estudiantes.tsx`",
+     "ver_alumnos"
+    ],
+    [
+     "/estudiantes/:token",
+     "`paginas/Ficha.tsx`",
+     "ver_ficha"
+    ],
+    [
+     "/seguimiento",
+     "`paginas/Seguimiento.tsx`",
+     "ver_seguimiento"
+    ],
+    [
+     "/consulta",
+     "`paginas/Consulta.tsx`",
+     "consultar"
+    ],
+    [
+     "/carreras",
+     "`paginas/Carreras.tsx`",
+     "ver_carreras"
+    ],
+    [
+     "/modelo",
+     "`paginas/CalidadModelo.tsx`",
+     "ver_modelo"
+    ],
+    [
+     "/reportes",
+     "`paginas/Reportes.tsx`",
+     "exportar"
+    ],
+    [
+     "/admin/usuarios · auditoria · estado",
+     "`paginas/admin/*.tsx`",
+     "administrar_usuarios, ver_auditoria, ver_estado"
+    ]
+   ],
+   "anchos": [
+    5,
+    6.5,
+    5
+   ]
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**lib/api.ts**: cliente HTTP; envía el token JWT y la cabecera **X-Institucion** con la institución elegida."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**lib/sesion.tsx** y **lib/permisos.ts**: guardan la sesión y deciden qué menú ver según las capacidades."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**vite.config.ts**: en desarrollo reenvía /api al backend; en Docker apunta a http://api:8090."
+  },
+  {
+   "tipo": "demo",
+   "texto": "abra `frontend/src/App.tsx` (líneas 70-87) y muestre una ruta protegida; luego cambie de rol en el navegador para ver que el menú cambia."
+  },
+  {
+   "tipo": "h1",
+   "texto": "4. Capa de servicio (API FastAPI)"
+  },
+  {
+   "tipo": "p",
+   "texto": "**backend/main.py** crea la aplicación, configura CORS, expone **/api/salud** (línea 73) y, en la línea 78, recorre los 10 módulos de api/ y los monta con el prefijo /api. La documentación interactiva queda en **/docs**."
+  },
+  {
+   "tipo": "h2",
+   "texto": "4.1 Los 26 servicios"
+  },
+  {
+   "tipo": "tabla",
+   "encabezado": [
+    "Módulo",
+    "Servicios",
+    "Para qué"
+   ],
+   "filas": [
+    [
+     "`api/sesion.py`",
+     "POST /auth/ingresar · GET /auth/yo · PUT /auth/clave · GET /instituciones",
+     "Ingreso con JWT, perfil, cambio de clave"
+    ],
+    [
+     "`api/panel.py`",
+     "GET /panel/resumen",
+     "Termómetro institucional"
+    ],
+    [
+     "`api/estudiantes.py`",
+     "GET /estudiantes · GET /estudiantes/{token} · POST /estudiantes/{token}/simulacion",
+     "Lista priorizada, ficha y simulador"
+    ],
+    [
+     "`api/seguimiento.py`",
+     "GET/POST /seguimiento · POST /seguimiento/{id}/cerrar",
+     "Intervenciones de bienestar"
+    ],
+    [
+     "`api/consulta.py`",
+     "GET /consulta/sugerencias · POST /consulta · POST …/interpretar · GET …/excel",
+     "Consulta conversacional"
+    ],
+    [
+     "`api/carreras.py`",
+     "GET /carreras/segmentos",
+     "Segmentación K-means"
+    ],
+    [
+     "`api/referentes.py`",
+     "GET /referentes",
+     "Comparación con la literatura"
+    ],
+    [
+     "`api/modelo.py`",
+     "GET /modelo/calidad",
+     "Métricas y los 4 modelos comparados"
+    ],
+    [
+     "`api/reportes.py`",
+     "GET /reportes/ejecutivo.xlsx · .pdf",
+     "Reportes ejecutivos"
+    ],
+    [
+     "`api/admin.py`",
+     "CRUD /usuarios · GET /auditoria · GET /estado",
+     "Administración de TI"
+    ]
+   ],
+   "anchos": [
+    3.6,
+    8,
+    5
+   ]
+  },
+  {
+   "tipo": "h2",
+   "texto": "4.2 Seguridad: autenticación, roles y capacidades"
+  },
+  {
+   "tipo": "p",
+   "texto": "Archivo **backend/core/seguridad.py**:"
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**hash_clave / verificar_clave** (líneas 55-60): contraseñas con bcrypt."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**crear_token** (línea 70): JWT HS256 con vencimiento de 8 horas."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**CAPACIDADES_POR_ROL**: tres roles, AUTORIDAD, BIENESTAR y ADMIN_TI, cada uno con su conjunto de capacidades."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**sesion_actual** (línea 97): valida el token y la cabecera X-Institucion; si la institución pedida no está entre las de la cuenta, rechaza."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**requiere(capacidad)** (línea 131): dependencia que se pone en cada endpoint, por ejemplo Depends(requiere(\"ver_modelo\"))."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**api/sesion.py**: cinco intentos fallidos bloquean la cuenta cinco minutos."
+  },
+  {
+   "tipo": "demo",
+   "texto": "en `http://localhost:8090/docs` ejecute POST /api/auth/ingresar, copie el token en «Authorize» y llame GET /api/modelo/calidad; con bienestar.demo esa ruta responde 403."
+  },
+  {
+   "tipo": "h1",
+   "texto": "5. Capa de datos y aislamiento por institución"
+  },
+  {
+   "tipo": "p",
+   "texto": "**base_de_datos/crear_almacen_academico.sql** crea el almacén ALMACEN_ACADEMICO en esquema estrella:"
+  },
+  {
+   "tipo": "tabla",
+   "encabezado": [
+    "Tipo",
+    "Objetos"
+   ],
+   "filas": [
+    [
+     "Dimensiones",
+     "dim_institucion, dim_tiempo, dim_estado_matricula, dim_modalidad, dim_periodo_academico, dim_sede, dim_carrera, dim_alumno, dim_referente"
+    ],
+    [
+     "Hechos",
+     "fact_matriculas, fact_prediccion_abandono, fact_segmento_carrera, fact_evaluacion_modelo, fact_referente_externo, fact_intervencion"
+    ],
+    [
+     "Vistas (lo único que lee la API)",
+     "VIS_INSTITUCION, VIS_ALUMNO, VIS_PREDICCION_ABANDONO, VIS_PREDICCION_DETALLE, VIS_SEGMENTO_CARRERA, VIS_EVALUACION_MODELO, VIS_REFERENTE_EXTERNO, VIS_INTERVENCION"
+    ],
+    [
+     "Procedimientos",
+     "sp_registrar_intervencion, sp_cerrar_intervencion"
+    ],
+    [
+     "Cuentas",
+     "chat_reader (solo vistas) · app_seguimiento (solo los dos procedimientos)"
+    ]
+   ],
+   "anchos": [
+    4,
+    12.6
+   ]
+  },
+  {
+   "tipo": "imagen",
+   "ruta": "documentacion/diagramas/av2_modelo_estrella.png",
+   "ancho": 14,
+   "pie": "Figura 2. Modelo en estrella del almacén académico."
+  },
+  {
+   "tipo": "h2",
+   "texto": "El mecanismo clave: SESSION_CONTEXT"
+  },
+  {
+   "tipo": "p",
+   "texto": "En **backend/core/db.py**, la función **_conexion_con_contexto** abre la conexión con la cuenta de lectura y ejecuta:"
+  },
+  {
+   "tipo": "codigo",
+   "texto": "EXEC sp_set_session_context @key = N'institucion_activa', @value = ?, @read_only = 1"
+  },
+  {
+   "tipo": "p",
+   "texto": "Cada vista VIS_* filtra por SESSION_CONTEXT('institucion_activa'). Con **@read_only = 1**, ninguna sentencia posterior de esa conexión puede cambiar la institución. Aunque una consulta generada por IA intente leer otra universidad, **el motor no devuelve sus filas**. Además, **validar_institucion** (línea 67) solo acepta códigos con formato válido. Las funciones **leer** y **leer_dicts** (líneas 122 y 146) son la única puerta de lectura de la API, y **ejecutar_seguimiento** (línea 152) es la única de escritura."
+  },
+  {
+   "tipo": "demo",
+   "texto": "abra `backend/core/db.py` en `_conexion_con_contexto` y después la vista `VIS_ALUMNO` en el SQL; explique que el aislamiento lo garantiza el motor, no el código de la API."
+  },
+  {
+   "tipo": "h1",
+   "texto": "6. El modelo de abandono (backend/ml)"
+  },
+  {
+   "tipo": "imagen",
+   "ruta": "documentacion/diagramas/av2_actividad_modelo.png",
+   "ancho": 13.5,
+   "pie": "Figura 3. Actividades del entrenamiento y la calificación."
+  },
+  {
+   "tipo": "h2",
+   "texto": "6.1 Del dato a la variable: caracteristicas.py"
+  },
+  {
+   "tipo": "p",
+   "texto": "**construir_panel** (línea 155) arma el panel **estudiante-periodo**: una fila por estudiante y periodo, con variables de rendimiento, asistencia, entregas y trayectoria. **variables_modelo** (línea 137) elige los grupos de variables disponibles en cada institución. La etiqueta es si el estudiante abandona en el periodo siguiente."
+  },
+  {
+   "tipo": "h2",
+   "texto": "6.2 Los cuatro modelos candidatos: entrenar.py"
+  },
+  {
+   "tipo": "p",
+   "texto": "La función **candidatos** (línea 127) define los cuatro algoritmos que se comparan:"
+  },
+  {
+   "tipo": "tabla",
+   "encabezado": [
+    "Nombre",
+    "Algoritmo",
+    "Manejo del desbalance"
+   ],
+   "filas": [
+    [
+     "RF_PONDERADO",
+     "Random Forest",
+     "class_weight='balanced_subsample'"
+    ],
+    [
+     "RF_SMOTE",
+     "Imputación + SMOTE + Random Forest (pipeline de imblearn)",
+     "Sobremuestreo sintético de la clase minoritaria"
+    ],
+    [
+     "LOGISTICA",
+     "Imputación + escalado + regresión logística",
+     "class_weight='balanced'"
+    ],
+    [
+     "LIGHTGBM",
+     "Gradient boosting con hiperparámetros por Optuna",
+     "Ponderación interna"
+    ]
+   ],
+   "anchos": [
+    3.2,
+    8,
+    5.4
+   ]
+  },
+  {
+   "tipo": "p",
+   "texto": "Proceso de **main** en entrenar.py:"
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**particion_temporal** (línea 99): los periodos más recientes se reservan como prueba, nunca se usan para entrenar."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**ajustar_rf / ajustar_lgbm** (líneas 154 y 166): búsqueda de hiperparámetros; LightGBM con Optuna."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**evaluar_cv** (línea 193): validación cruzada **agrupada por estudiante** (StratifiedGroupKFold), para que un mismo estudiante no quede en entrenamiento y validación a la vez."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**Línea 344**: se elige el modelo con mayor ROC-AUC medio y, en empate, mayor PR-AUC."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**calibrar** (línea 218): escalado de Platt (ml/calibracion.py) para que la probabilidad sea creíble."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**umbral_para_recall** (línea 211): umbrales de riesgo alto (recall 0,50) y medio (recall 0,80)."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**equidad** (línea 275): métricas por subgrupo."
+  },
+  {
+   "tipo": "h2",
+   "texto": "6.3 Resultados (metricas.json)"
+  },
+  {
+   "tipo": "tabla",
+   "encabezado": [
+    "ROC-AUC medio (CV)",
+    "RF_PONDERADO",
+    "RF_SMOTE",
+    "LOGISTICA",
+    "LIGHTGBM"
+   ],
+   "filas": [
+    [
+     "UNEMI_PRUEBAS",
+     "0,8256",
+     "0,8187",
+     "0,8182",
+     "0,8292"
+    ],
+    [
+     "OULAD_UK",
+     "0,7966",
+     "0,7765",
+     "0,7872",
+     "0,8030"
+    ]
+   ],
+   "anchos": [
+    4.2,
+    3.1,
+    3.1,
+    3.1,
+    3.1
+   ]
+  },
+  {
+   "tipo": "tabla",
+   "encabezado": [
+    "Prueba temporal del ganador (LightGBM)",
+    "UNEMI_PRUEBAS",
+    "OULAD_UK"
+   ],
+   "filas": [
+    [
+     "Registros / abandonos",
+     "20 385 / 1 332",
+     "64 302 / 1 975"
+    ],
+    [
+     "ROC-AUC · PR-AUC",
+     "0,8295 · 0,4685",
+     "0,7659 · 0,1029"
+    ],
+    [
+     "Brier sin calibrar → calibrado",
+     "0,132 → 0,0453",
+     "0,1906 → 0,0288"
+    ],
+    [
+     "Captura en el 10 % / 20 % de mayor riesgo",
+     "55,5 % / 68,5 %",
+     "34,3 % / 55,2 %"
+    ],
+    [
+     "Umbral alto / medio",
+     "0,1812 / 0,0396",
+     "0,0493 / 0,0188"
+    ]
+   ],
+   "anchos": [
+    6.4,
+    5,
+    5
+   ]
+  },
+  {
+   "tipo": "p",
+   "texto": "El paquete guardado (**ml/modelos/<INSTITUCION>/modelo_abandono.joblib**) contiene el modelo ganador, el calibrador, las columnas y los umbrales. Hay **un modelo por institución**, y sus datos nunca se mezclan."
+  },
+  {
+   "tipo": "h2",
+   "texto": "6.4 Uso del modelo en línea"
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**ml/servicio.py**: **paquete** (línea 30) carga el joblib una vez y lo recarga si cambia el archivo. **predecir** (línea 54) devuelve probabilidad calibrada, categoría, factores y explicación."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**ml/calificar.py**: proceso por lotes que califica a todos los estudiantes activos, guarda en fact_prediccion_abandono y calcula **PSI** (línea 51) para vigilar la deriva."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**ml/explicacion.py**: contribuciones **SHAP** (línea 27), las tres razones en frases (factores, línea 51) y recomendaciones de acompañamiento (línea 83)."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**ml/simulacion.py**: **recalcular** (línea 72) responde «¿qué pasaría si…?» en la ficha."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**ml/segmentar.py**: K-means de carreras con semilla fija; **validar** (línea 100) mide silhouette y estabilidad (ARI)."
+  },
+  {
+   "tipo": "demo",
+   "texto": "abra `backend/ml/entrenar.py` en `candidatos` (línea 127) y la línea 344; después muestre la pantalla «Calidad del modelo», que lee esos mismos números desde `metricas.json` vía GET /api/modelo/calidad."
+  },
+  {
+   "tipo": "h1",
+   "texto": "7. Consulta conversacional (backend/nl2sql)"
+  },
+  {
+   "tipo": "p",
+   "texto": "**nl2sql/motor.py → responder** (línea 121) sigue cinco pasos:"
+  },
+  {
+   "tipo": "tabla",
+   "encabezado": [
+    "Paso",
+    "Archivo",
+    "Qué hace"
+   ],
+   "filas": [
+    [
+     "1. Barrera de intención",
+     "`guardarrailes.py` → clasificar (l. 62)",
+     "Bloquea escritura, inyección, otra institución, tablas físicas; responde saludo y ayuda sin IA"
+    ],
+    [
+     "2. Métrica certificada",
+     "`enrutador.py` → extraer_entidades, buscar, elegir",
+     "Compara con 40 métricas de catalogo_metricas.json; si coincide, ejecuta su SQL fijo y la IA no toca la cifra"
+    ],
+    [
+     "3. Generación con IA",
+     "`generador.py` + `proveedores.py`",
+     "Si no hay métrica, la IA propone SQL guiada por ejemplos; cascada Gemini → Groq → NVIDIA → DeepSeek"
+    ],
+    [
+     "4. Validación del árbol SQL",
+     "`validador.py` → validar (l. 60)",
+     "Analiza el árbol con sqlglot: una sola sentencia SELECT y solo vistas VIS_* autorizadas; una corrección automática"
+    ],
+    [
+     "5. Ejecución y respuesta",
+     "`core/db.py` + `redactor.py`",
+     "Ejecuta con chat_reader y SESSION_CONTEXT; resumen determinista, cifras verificadas, cédulas enmascaradas"
+    ]
+   ],
+   "anchos": [
+    3.6,
+    5.4,
+    7.6
+   ]
+  },
+  {
+   "tipo": "p",
+   "texto": "Cada respuesta muestra su **origen**: métrica certificada, generada con IA y validada, barrera de seguridad o sin respuesta. **eval/** contiene el conjunto dorado (40 preguntas, 12 de robustez y 8 adversariales) con el que se mide la exactitud."
+  },
+  {
+   "tipo": "imagen",
+   "ruta": "documentacion/diagramas/av2_secuencia_consulta_ia.png",
+   "ancho": 15,
+   "pie": "Figura 4. Secuencia de una consulta resuelta con IA."
+  },
+  {
+   "tipo": "demo",
+   "texto": "pregunte «¿cuántos estudiantes están en riesgo alto por carrera?» (métrica certificada) y luego «borra los estudiantes» (barrera de seguridad); con admin.ti pulse «Ver SQL»."
+  },
+  {
+   "tipo": "h1",
+   "texto": "8. Privacidad y auditoría (LOPDP)"
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**core/privacidad.py**: enmascarar_cedula (l. 52), seudonimizar (l. 58) antes de enviar filas a la IA, y **token_estudiante** (l. 96): la URL de la ficha usa un token, nunca la cédula."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**core/auditoria.py → registrar** (línea 33): ingresos, fichas, consultas (con huella del SQL), exportaciones y cambios de cuentas."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**Datos de prueba**: UNEMI_PRUEBAS es sintético (cédulas con provincia 00); OULAD es público y anónimo (CC BY 4.0)."
+  },
+  {
+   "tipo": "h1",
+   "texto": "9. Procesos por lotes (pipeline)"
+  },
+  {
+   "tipo": "p",
+   "texto": "**backend/scripts/pipeline.py** orquesta 15 pasos y guarda el estado en datos_locales/pipeline_estado.json (lo muestra la pantalla «Estado del sistema»):"
+  },
+  {
+   "tipo": "p",
+   "texto": "entorno → conexion → unemi → oulad → esquema → etl → referentes → entrenar → calificar → segmentar → reportes → diccionario → usuarios → pruebas → consulta (opcional)"
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**etl/perfiles.py**: el mapeo de cada institución a un contrato común. **etl/etl_academico.py**: extraer (l. 42) y cargar (l. 74), con validación de reglas de calidad."
+  },
+  {
+   "tipo": "imagen",
+   "ruta": "documentacion/diagramas/av2_actividad_etl.png",
+   "ancho": 12.5,
+   "pie": "Figura 5. Actividades del ETL."
+  },
+  {
+   "tipo": "h1",
+   "texto": "10. Despliegue: un solo comando (npm run dev)"
+  },
+  {
+   "tipo": "p",
+   "texto": "**scripts/dev.mjs** usa solo módulos nativos de Node, por eso no necesita npm install:"
+  },
+  {
+   "tipo": "vineta",
+   "texto": "Verifica Docker: lo instala con winget si falta y abre Docker Desktop si está cerrado."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "Prepara backend/.env y genera la contraseña de SQL Server si falta."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "Elige puertos libres a partir de 3000 (web), 8090 (API) y 14330 (SQL Server)."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "Reutiliza el contenedor vicmar-sqlserver si existe; si no, lo crea con el volumen vicmar_datos_sql."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "Ejecuta docker compose up --build y espera a que los servicios estén sanos."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "Si la base está vacía, descarga OULAD (repositorio UCI) y ejecuta el pipeline sin reentrenar; protege los reportes aprobados."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "Abre el navegador en la pantalla de ingreso."
+  },
+  {
+   "tipo": "tabla",
+   "encabezado": [
+    "Contenedor",
+    "Imagen",
+    "Puerto (host)"
+   ],
+   "filas": [
+    [
+     "vicmar-sqlserver",
+     "mcr.microsoft.com/mssql/server:2022-latest",
+     "127.0.0.1:14330 → 1433"
+    ],
+    [
+     "vicmar-api-1",
+     "backend/Dockerfile (python:3.13 + ODBC 18)",
+     "127.0.0.1:8090 → 8090"
+    ],
+    [
+     "vicmar-web-1",
+     "frontend/Dockerfile (node:22-alpine)",
+     "3000 → 3000"
+    ]
+   ],
+   "anchos": [
+    3.5,
+    8,
+    5
+   ]
+  },
+  {
+   "tipo": "h2",
+   "texto": "Calidad y repositorio"
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**Pruebas**: 153 unitarias del backend (pytest) más 8 de integración con SQL Server, y 11 de la interfaz (vitest)."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**CI** (.github/workflows/ci.yml): backend, frontend, validación de Compose y origen del PR."
+  },
+  {
+   "tipo": "vineta",
+   "texto": "**Ramas**: desarrollo / contribuciones → pruebas → main, con reglas que impiden enviar cambios directamente a main."
+  },
+  {
+   "tipo": "h1",
+   "texto": "11. Recorrido sugerido para la demostración (12 a 15 minutos)"
+  },
+  {
+   "tipo": "tabla",
+   "encabezado": [
+    "#",
+    "Mostrar",
+    "Archivo o pantalla",
+    "Idea que se demuestra"
+   ],
+   "filas": [
+    [
+     "1",
+     "Arranque",
+     "`npm run dev` en la terminal de VS Code",
+     "Reproducible con un comando; puertos libres"
+    ],
+    [
+     "2",
+     "Arquitectura",
+     "Figura 1 y el árbol de carpetas",
+     "Capas desacopladas y reglas de dependencia"
+    ],
+    [
+     "3",
+     "Ingreso y roles",
+     "`core/seguridad.py` + pantalla de ingreso",
+     "JWT, capacidades; autorización en el backend"
+    ],
+    [
+     "4",
+     "Aislamiento",
+     "`core/db.py` + vista VIS_ALUMNO",
+     "SESSION_CONTEXT de solo lectura"
+    ],
+    [
+     "5",
+     "Panel y lista",
+     "Panel ejecutivo, Estudiantes en riesgo",
+     "Priorización por probabilidad calibrada"
+    ],
+    [
+     "6",
+     "Ficha",
+     "Ficha + `ml/explicacion.py`, `ml/simulacion.py`",
+     "SHAP, tres razones y simulador"
+    ],
+    [
+     "7",
+     "Modelo",
+     "`ml/entrenar.py` (candidatos, l. 344) + Calidad del modelo",
+     "Cuatro modelos, CV agrupada, calibración"
+    ],
+    [
+     "8",
+     "Consulta",
+     "Consulta + `nl2sql/motor.py`",
+     "Métrica certificada frente a IA validada; barrera"
+    ],
+    [
+     "9",
+     "Otra institución",
+     "Selector → OULAD_UK",
+     "Mismo sistema, datos reales, otro modelo"
+    ],
+    [
+     "10",
+     "Calidad",
+     "`npm test`, CI en GitHub, /docs",
+     "Pruebas, API documentada, ramas protegidas"
+    ]
+   ],
+   "anchos": [
+    0.8,
+    2.6,
+    6.4,
+    6.8
+   ]
+  },
+  {
+   "tipo": "h2",
+   "texto": "Preguntas probables del tribunal"
+  },
+  {
+   "tipo": "tabla",
+   "encabezado": [
+    "Pregunta",
+    "Respuesta corta y dónde está"
+   ],
+   "filas": [
+    [
+     "¿Por qué LightGBM?",
+     "Mayor ROC-AUC medio en CV agrupada en ambas instituciones (entrenar.py, l. 344; metricas.json → comparacion_cv)."
+    ],
+    [
+     "¿Cómo evitan la fuga de datos?",
+     "CV agrupada por estudiante y prueba temporal con periodos posteriores (evaluar_cv l. 193, particion_temporal l. 99)."
+    ],
+    [
+     "¿Qué impide que la IA lea otra universidad?",
+     "Cuatro capas: guardarraíles, validador del árbol SQL, cuenta chat_reader solo con vistas y SESSION_CONTEXT de solo lectura."
+    ],
+    [
+     "¿La probabilidad es real?",
+     "Calibrada con Platt; el Brier baja de 0,132 a 0,0453 en UNEMI (calibracion.py, metricas.json)."
+    ],
+    [
+     "¿Cómo explican una alerta?",
+     "Contribuciones SHAP traducidas a frases y recomendaciones (explicacion.py)."
+    ],
+    [
+     "¿Y si cambian los datos con el tiempo?",
+     "Monitoreo de deriva con PSI en cada calificación (calificar.py, l. 51; pantalla Estado)."
+    ],
+    [
+     "¿Cómo protegen los datos personales?",
+     "Enmascarado, seudonimización antes de la IA, token en URL y auditoría (privacidad.py, auditoria.py)."
+    ]
+   ],
+   "anchos": [
+    5,
+    11.6
+   ]
+  }
+ ]
+}

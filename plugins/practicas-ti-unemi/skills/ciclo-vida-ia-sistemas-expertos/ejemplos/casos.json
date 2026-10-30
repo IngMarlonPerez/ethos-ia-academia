@@ -1,0 +1,5 @@
+{
+  "Caso 1": ["fiebre_alta", "dolor_muscular_intenso", "tos_seca", "inicio_brusco"],
+  "Caso 2": ["estornudos", "picazon_ojos", "secrecion_nasal_clara", "sin_fiebre", "empeora_en_primavera"],
+  "Caso 3": ["congestion_leve", "dolor_garganta_leve", "sin_fiebre"]
+}

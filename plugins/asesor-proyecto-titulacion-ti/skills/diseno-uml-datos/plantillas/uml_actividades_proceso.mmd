@@ -1,0 +1,21 @@
+%% Actividades con carriles (swimlanes): un subgrafo por actor o componente, direction TB dentro,
+%% y flowchart LR afuera para que no quede demasiado alto.
+flowchart LR
+  subgraph C1["1. Actor"]
+    direction TB
+    A1([Inicio]) --> A2["Primera acción"]
+    A2 --> A3["Enviar solicitud"]
+  end
+  subgraph C2["2. Sistema"]
+    direction TB
+    B1["Recibir y validar"] --> B2{"¿Datos válidos?"}
+    B2 -- No --> B3(["Informar el error"])
+    B2 -- Sí --> B4["Procesar"]
+    B4 --> B5["Guardar resultado"]
+  end
+  subgraph C3["3. Base de datos"]
+    direction TB
+    D1[("Tablas")] --> D2(["Fin"])
+  end
+  C1 --> C2
+  C2 --> C3

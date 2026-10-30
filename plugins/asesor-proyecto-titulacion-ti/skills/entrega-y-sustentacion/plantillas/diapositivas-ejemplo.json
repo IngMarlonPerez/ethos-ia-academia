@@ -1,0 +1,66 @@
+{
+  "plantilla": "",
+  "portada": {
+    "asignatura": "Título del proyecto de titulación de TI (verbo + variable + método + contexto)",
+    "carrera": "INGENIERÍA EN TECNOLOGÍAS DE LA INFORMACIÓN",
+    "etiqueta_autores": "Estudiantes:",
+    "autores": "Apellido1 Apellido2 Nombre1 Nombre2  |  Apellido1 Apellido2 Nombre1 Nombre2",
+    "etiqueta_tema": "Tutor/a",
+    "tema": "Mgs. Apellido1 Apellido2 Nombre1 Nombre2",
+    "docente": "Sustentación del trabajo de titulación",
+    "cargo": "UNIVERSIDAD ESTATAL DE MILAGRO · 2026",
+    "notas": "Saludo al tribunal y presentación de los autores. Tomar nombres, tutor y carrera de titulacion.json."
+  },
+  "diapositivas": [
+    {"tipo": "agenda", "titulo": "Contenido",
+     "items": ["Problema y objetivos", "Trabajos previos y vacío", "Requerimientos", "Arquitectura y tecnologías", "Resultados", "Demostración", "Conclusiones"]},
+
+    {"tipo": "cifras", "titulo": "El problema", "subtitulo": "Una frase que resuma la necesidad",
+     "items": [{"valor": "[cifra 1]", "etiqueta": "qué mide (Autor, año)"},
+               {"valor": "[cifra 2]", "etiqueta": "qué mide (Autor, año)"},
+               {"valor": "[cifra 3]", "etiqueta": "qué mide (Autor, año)"}],
+     "texto": "Cada cifra sale de una fuente con DOI leída en el texto completo.",
+     "notas": "Explicar las cifras. No decir ninguna que no esté en el documento."},
+
+    {"tipo": "texto", "titulo": "Objetivos", "parrafos": ["Objetivo general con verbo de Bloom, qué, cómo y para qué."],
+     "destacado": {"titulo": "Alcance", "texto": "Qué incluye y qué no incluye el prototipo."}},
+
+    {"tipo": "comparativa", "titulo": "Trabajos previos", "subtitulo": "Qué aportan y qué les falta",
+     "izquierda": {"titulo": "Aportes", "items": ["Aporte 1 (Autor, año)", "Aporte 2 (Autor, año)"]},
+     "derecha": {"titulo": "Vacío", "items": ["Lo que ningún trabajo resuelve", "Lo que el presente caso agrega"]}},
+
+    {"tipo": "tabla", "titulo": "Requerimientos y métricas", "encabezados": ["Requerimiento", "Métrica", "Meta"],
+     "filas": [["RF-01 …", "Métrica 1", "≥ 0,00"], ["RNF-01 …", "Métrica 2", "≤ 0 s"]], "anchos": [1.6, 1.2, 0.8]},
+
+    {"tipo": "diagrama", "titulo": "Arquitectura", "subtitulo": "Estilo elegido tras comparar al menos 3",
+     "spec": {"tipo": "niveles", "centro": "Datos",
+              "niveles": [{"nombre": "Presentación", "descripcion": "Interfaz web"},
+                          {"nombre": "Servicios", "descripcion": "API REST"},
+                          {"nombre": "Dominio", "descripcion": "Reglas y modelos"},
+                          {"nombre": "Datos", "descripcion": "Base de datos"}]}},
+
+    {"tipo": "diagrama", "titulo": "Metodología", "subtitulo": "Fases con su entregable",
+     "spec": {"tipo": "proceso",
+              "pasos": [{"titulo": "Fase 1", "texto": "Entregable"}, {"titulo": "Fase 2", "texto": "Entregable"},
+                        {"titulo": "Fase 3", "texto": "Entregable"}, {"titulo": "Fase 4", "texto": "Entregable"}]}},
+
+    {"tipo": "cifras", "titulo": "Resultados", "subtitulo": "Lo medido, frente a la meta",
+     "items": [{"valor": "[valor]", "etiqueta": "métrica 1 (meta [meta])"},
+               {"valor": "[valor]", "etiqueta": "métrica 2 (meta [meta])"}],
+     "texto": "Si una meta no se alcanzó, se dice y se discute."},
+
+    {"tipo": "tarjetas", "titulo": "Demostración",
+     "items": [{"icono": "usuario_ok", "titulo": "Ingreso", "texto": "Sesión iniciada por el autor"},
+               {"icono": "grafico_barras", "titulo": "Función principal", "texto": "Resultado explicado"},
+               {"icono": "candado", "titulo": "Seguridad", "texto": "Intento bloqueado"},
+               {"icono": "verificacion", "titulo": "Confiabilidad", "texto": "Métricas visibles"}]},
+
+    {"tipo": "conclusiones", "titulo": "Conclusiones",
+     "items": [{"titulo": "Objetivo 1", "texto": "Conclusión con su cifra medida."},
+               {"titulo": "Objetivo 2", "texto": "Conclusión con su cifra medida."},
+               {"titulo": "Objetivo 3", "texto": "Conclusión con su cifra medida."}]},
+
+    {"tipo": "referencias", "titulo": "Referencias clave",
+     "items": ["Apellido, N. (2025). Título del artículo. Revista, 1(1), 1–10. https://doi.org/10.0000/ejemplo"]}
+  ]
+}

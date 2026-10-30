@@ -1,0 +1,23 @@
+{
+  "name": "creacion-de-empresa",
+  "displayName": "Creación de Empresa",
+  "version": "1.3.1",
+  "description": "Pipeline para crear una empresa de punta a punta, nacido de la creación real de ETHOSLAB S.A.S. (Ethos IA, Cuenca, Ecuador): expediente con empresa.json como fuente única de datos, nombre y marca con verificación de disponibilidad, logos exportados para web, redes y sello, hoja membretada en Word y PDF y documentos sobre ella, constitución electrónica de una S.A.S. en la Superintendencia de Compañías, plazos y obligaciones posteriores (RUC, SRI, patente, banco, contador, IESS), balance inicial con TXT desde las plantillas oficiales y documentos listos para firmar, gobierno societario (acuerdo de accionistas, cesión de acciones, actas), sitio web corporativo con seguridad y SEO, equipo y practicantes, y verificación de coherencia del expediente.",
+  "author": {
+    "name": "Ethos IA (ETHOSLAB S.A.S.)"
+  },
+  "license": "MIT",
+  "keywords": [
+    "balance-inicial",
+    "constitucion",
+    "ecuador",
+    "emprendimiento",
+    "logo",
+    "marca",
+    "membrete",
+    "sas",
+    "scvs",
+    "sitio-web",
+    "sri"
+  ]
+}

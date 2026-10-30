@@ -1,0 +1,342 @@
+{
+ "educacion": {
+  "lucide": "graduation-cap",
+  "etiquetas": "titulación grado universidad"
+ },
+ "libro": {
+  "lucide": "book-open",
+  "etiquetas": "lectura teoría marco"
+ },
+ "biblioteca": {
+  "lucide": "library",
+  "etiquetas": "fuentes bibliografía"
+ },
+ "escuela": {
+  "lucide": "school",
+  "etiquetas": "institución educativa colegio"
+ },
+ "estudiante": {
+  "lucide": "user",
+  "etiquetas": "persona individuo"
+ },
+ "grupo": {
+  "lucide": "users",
+  "etiquetas": "pares compañeros equipo"
+ },
+ "comunidad": {
+  "lucide": "users-round",
+  "etiquetas": "comunidad colectivo"
+ },
+ "familia": {
+  "lucide": "house",
+  "etiquetas": "hogar familia"
+ },
+ "apoyo": {
+  "lucide": "hand-helping",
+  "etiquetas": "ayuda acompañamiento trabajo social"
+ },
+ "alianza": {
+  "lucide": "heart-handshake",
+  "etiquetas": "cooperación alianza escuela-familia"
+ },
+ "acuerdo": {
+  "lucide": "handshake",
+  "etiquetas": "convenio mediación"
+ },
+ "cuidado": {
+  "lucide": "hand-heart",
+  "etiquetas": "cuidado bienestar"
+ },
+ "proteccion": {
+  "lucide": "shield",
+  "etiquetas": "protección prevención"
+ },
+ "seguridad": {
+  "lucide": "shield-check",
+  "etiquetas": "seguridad garantía"
+ },
+ "derechos": {
+  "lucide": "scale",
+  "etiquetas": "derechos justicia normativa"
+ },
+ "ley": {
+  "lucide": "gavel",
+  "etiquetas": "ley tribunal jurídico"
+ },
+ "gobierno": {
+  "lucide": "landmark",
+  "etiquetas": "Estado ministerio política pública"
+ },
+ "institucion": {
+  "lucide": "building-2",
+  "etiquetas": "empresa organización"
+ },
+ "busqueda": {
+  "lucide": "search",
+  "etiquetas": "búsqueda revisión"
+ },
+ "busqueda_documental": {
+  "lucide": "file-search",
+  "etiquetas": "revisión documental"
+ },
+ "documento": {
+  "lucide": "file-text",
+  "etiquetas": "informe documento"
+ },
+ "lista": {
+  "lucide": "clipboard-list",
+  "etiquetas": "instrumento protocolo"
+ },
+ "verificacion": {
+  "lucide": "list-checks",
+  "etiquetas": "criterios checklist"
+ },
+ "filtro": {
+  "lucide": "filter",
+  "etiquetas": "cribado selección"
+ },
+ "grafico_barras": {
+  "lucide": "chart-column",
+  "etiquetas": "estadística resultados"
+ },
+ "grafico_circular": {
+  "lucide": "chart-pie",
+  "etiquetas": "porcentajes distribución"
+ },
+ "tendencia": {
+  "lucide": "trending-up",
+  "etiquetas": "crecimiento tendencia"
+ },
+ "objetivo": {
+  "lucide": "target",
+  "etiquetas": "objetivo meta"
+ },
+ "idea": {
+  "lucide": "lightbulb",
+  "etiquetas": "idea propuesta innovación"
+ },
+ "mente": {
+  "lucide": "brain",
+  "etiquetas": "cognición salud mental psicología"
+ },
+ "corazon": {
+  "lucide": "heart",
+  "etiquetas": "emociones afecto"
+ },
+ "salud": {
+  "lucide": "heart-pulse",
+  "etiquetas": "salud bienestar"
+ },
+ "medico": {
+  "lucide": "stethoscope",
+  "etiquetas": "salud atención médica"
+ },
+ "hospital": {
+  "lucide": "hospital",
+  "etiquetas": "centro de salud"
+ },
+ "comunicacion": {
+  "lucide": "message-circle",
+  "etiquetas": "diálogo comunicación"
+ },
+ "difusion": {
+  "lucide": "megaphone",
+  "etiquetas": "campaña sensibilización"
+ },
+ "mundo": {
+  "lucide": "globe",
+  "etiquetas": "global internacional"
+ },
+ "ubicacion": {
+  "lucide": "map-pin",
+  "etiquetas": "lugar contexto territorio"
+ },
+ "calendario": {
+  "lucide": "calendar",
+  "etiquetas": "fecha cronograma"
+ },
+ "tiempo": {
+  "lucide": "clock",
+  "etiquetas": "duración tiempo"
+ },
+ "correcto": {
+  "lucide": "circle-check",
+  "etiquetas": "ventaja logro"
+ },
+ "alerta": {
+  "lucide": "triangle-alert",
+  "etiquetas": "riesgo advertencia"
+ },
+ "error": {
+  "lucide": "circle-x",
+  "etiquetas": "limitación problema"
+ },
+ "candado": {
+  "lucide": "lock",
+  "etiquetas": "privacidad confidencialidad"
+ },
+ "llave": {
+  "lucide": "key",
+  "etiquetas": "clave acceso"
+ },
+ "base_datos": {
+  "lucide": "database",
+  "etiquetas": "datos repositorio"
+ },
+ "servidor": {
+  "lucide": "server",
+  "etiquetas": "infraestructura"
+ },
+ "codigo": {
+  "lucide": "code",
+  "etiquetas": "programación software"
+ },
+ "procesador": {
+  "lucide": "cpu",
+  "etiquetas": "hardware computación"
+ },
+ "computadora": {
+  "lucide": "laptop",
+  "etiquetas": "tecnología"
+ },
+ "celular": {
+  "lucide": "smartphone",
+  "etiquetas": "móvil redes sociales"
+ },
+ "red": {
+  "lucide": "network",
+  "etiquetas": "red conexiones"
+ },
+ "nube": {
+  "lucide": "cloud",
+  "etiquetas": "nube servicios"
+ },
+ "internet": {
+  "lucide": "wifi",
+  "etiquetas": "conectividad"
+ },
+ "configuracion": {
+  "lucide": "settings",
+  "etiquetas": "ajustes gestión"
+ },
+ "herramienta": {
+  "lucide": "wrench",
+  "etiquetas": "herramienta mantenimiento"
+ },
+ "trabajo": {
+  "lucide": "briefcase",
+  "etiquetas": "empleo profesional"
+ },
+ "dinero": {
+  "lucide": "banknote",
+  "etiquetas": "economía finanzas"
+ },
+ "ambiente": {
+  "lucide": "leaf",
+  "etiquetas": "ambiente sostenibilidad"
+ },
+ "reciclaje": {
+  "lucide": "recycle",
+  "etiquetas": "economía circular"
+ },
+ "rompecabezas": {
+  "lucide": "puzzle",
+  "etiquetas": "inclusión integración"
+ },
+ "microscopio": {
+  "lucide": "microscope",
+  "etiquetas": "ciencia investigación"
+ },
+ "laboratorio": {
+  "lucide": "flask-conical",
+  "etiquetas": "experimento"
+ },
+ "capas": {
+  "lucide": "layers",
+  "etiquetas": "niveles modelo"
+ },
+ "flujo": {
+  "lucide": "workflow",
+  "etiquetas": "proceso flujo"
+ },
+ "ramas": {
+  "lucide": "git-branch",
+  "etiquetas": "alternativas versiones"
+ },
+ "observacion": {
+  "lucide": "eye",
+  "etiquetas": "observación"
+ },
+ "accesibilidad": {
+  "lucide": "accessibility",
+  "etiquetas": "discapacidad inclusión"
+ },
+ "usuario_ok": {
+  "lucide": "user-check",
+  "etiquetas": "inclusión aceptación"
+ },
+ "usuario_excluido": {
+  "lucide": "user-x",
+  "etiquetas": "exclusión rechazo"
+ },
+ "infancia": {
+  "lucide": "baby",
+  "etiquetas": "niñez primera infancia"
+ },
+ "crecimiento": {
+  "lucide": "sprout",
+  "etiquetas": "desarrollo resiliencia"
+ },
+ "rumbo": {
+  "lucide": "compass",
+  "etiquetas": "orientación dirección"
+ },
+ "bandera": {
+  "lucide": "flag",
+  "etiquetas": "hito país"
+ },
+ "premio": {
+  "lucide": "award",
+  "etiquetas": "logro calidad"
+ },
+ "estrella": {
+  "lucide": "star",
+  "etiquetas": "destacado"
+ },
+ "cita": {
+  "lucide": "quote",
+  "etiquetas": "cita testimonio"
+ },
+ "enlace": {
+  "lucide": "link",
+  "etiquetas": "relación vínculo"
+ },
+ "correo": {
+  "lucide": "mail",
+  "etiquetas": "contacto"
+ },
+ "telefono": {
+  "lucide": "phone",
+  "etiquetas": "contacto línea de ayuda"
+ },
+ "marcador": {
+  "lucide": "book-marked",
+  "etiquetas": "referencia"
+ },
+ "escritura": {
+  "lucide": "pencil",
+  "etiquetas": "redacción"
+ },
+ "presentacion": {
+  "lucide": "presentation",
+  "etiquetas": "exposición clase"
+ },
+ "monitor": {
+  "lucide": "monitor",
+  "etiquetas": "pantalla digital"
+ },
+ "emergencia": {
+  "lucide": "siren",
+  "etiquetas": "urgencia alerta"
+ }
+}

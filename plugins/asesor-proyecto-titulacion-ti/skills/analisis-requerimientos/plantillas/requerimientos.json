@@ -1,0 +1,40 @@
+{
+  "_ayuda": "Requerimientos del proyecto (sección 2.1). Una sola fuente para las tablas del Word, la matriz de trazabilidad y los controles. Borra los elementos con _ejemplo.",
+  "objetivos": [
+    {"_ejemplo": true, "id": "OE1", "texto": "Analizar …", "bloom": "Analizar"}
+  ],
+  "alternativas": [
+    {"_ejemplo": true, "id": "ALT1", "nombre": "Reportes manuales en hojas de cálculo", "descripcion": "",
+     "ventajas": [], "desventajas": [], "seleccionada": false}
+  ],
+  "criterios_alternativas": ["Costo de implementación", "Escalabilidad", "Personalización", "Análisis de datos",
+                             "Tiempo de implementación", "Mantenimiento", "Control de acceso", "Protección de datos"],
+  "matriz_alternativas": {"_ejemplo": {"ALT1": {"Costo de implementación": "Bajo"}}},
+  "actores": [
+    {"_ejemplo": true, "id": "A1", "actor": "Autoridad académica", "perfil": "", "necesidad": "",
+     "conocimiento_tecnico": "Bajo", "persona_principal": true}
+  ],
+  "historias": [
+    {"_ejemplo": true, "id": "HU-01", "actor": "A1", "como": "autoridad académica", "quiero": "…", "para": "…",
+     "criterios": [{"dado": "…", "cuando": "…", "entonces": "…"}], "objetivos": ["OE1"], "pieza": "Dashboard",
+     "prioridad": "Alta"}
+  ],
+  "rf": [
+    {"_ejemplo": true, "id": "RF-01", "pieza": "Dashboard", "requerimiento": "El sistema debe …",
+     "historias": ["HU-01"], "objetivo": "OE1", "implementacion": "src/components/Panel.jsx", "pruebas": ["PR-01"]}
+  ],
+  "rnf": [
+    {"_ejemplo": true, "id": "RNF-01", "atributo": "Seguridad", "iso25010": "Seguridad › Confidencialidad",
+     "requerimiento": "…", "verificacion": "…", "pruebas": ["PR-02"]},
+    {"_ejemplo": true, "id": "RNF-02", "atributo": "Privacidad", "iso25010": "Seguridad › Confidencialidad",
+     "requerimiento": "Ningún dato personal se envía a servicios externos de IA; minimización y seudonimización (ley de datos personales del perfil).",
+     "verificacion": "Prueba automática que intercepta el envío y busca identificadores personales", "pruebas": ["PR-03"]}
+  ],
+  "metricas": [
+    {"_ejemplo": true, "id": "M-01", "metrica": "Recall de la clase positiva", "pieza": "Modelo", "meta": ">= 0,80",
+     "objetivo": "OE3", "artefacto": "../codigo/backend/ml/models/metrics.json", "ruta_json": "validacion_temporal.recall"}
+  ],
+  "pruebas": [
+    {"_ejemplo": true, "id": "PR-01", "tipo": "unitaria", "descripcion": "…", "archivo": "tests/test_panel.py"}
+  ]
+}

@@ -1,0 +1,8 @@
+%% Diagrama de flujo de trabajo de la solución tecnológica (proceso de negocio de punta a punta).
+flowchart TB
+  I([Necesidad del usuario]) --> P1["Registrar / cargar datos"]
+  P1 --> P2["Procesar (ETL, modelo, reglas)"]
+  P2 --> P3{"¿Resultado confiable?"}
+  P3 -- No --> P4["Revisar datos o parámetros"] --> P2
+  P3 -- Sí --> P5["Publicar en el panel"]
+  P5 --> P6["Tomar la decisión"] --> F([Fin])

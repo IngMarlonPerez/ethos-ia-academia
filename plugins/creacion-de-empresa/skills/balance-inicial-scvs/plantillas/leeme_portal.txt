@@ -1,0 +1,38 @@
+BALANCE INICIAL · {RAZON SOCIAL}
+RUC {RUC} · Expediente SCVS {EXPEDIENTE} · Inscripción N.º {INSCRIPCION} del {FECHA}
+
+QUÉ HAY EN LA CARPETA
+- 01_Asiento_Diario_Apertura_*.pdf
+  Se sube en el anexo "Asiento de Diario". Lo firman el contador y el representante legal.
+- 02_Comprobante_Ingreso_Capital_*.pdf   (capital pagado)   o
+  02_Declaracion_Capital_Suscrito_por_Pagar_*.pdf   (capital por pagar)
+  Se sube en el anexo "Comprobante de Depósito".
+- 03_Estados_Financieros_Iniciales_*.pdf
+  NO se sube. Es para el contador y el archivo de la compañía.
+- situacionFinanciera.txt  -> "Estado de Situación Financiera NIIF"
+- resultadoIntegral.txt    -> "Estado de Resultado Integral NIIF"
+- Los .docx son las versiones editables.
+
+ANTES DE EMPEZAR
+1. El contador escribe su nombre, C.C./RUC y registro profesional (o ya vienen en el documento), revisa y firma
+   electrónicamente. Después firma el representante legal.
+2. Consultar el RUC en el SRI y guardarlo en PDF (anexo "RUC").
+3. El representante legal necesita usuario y clave DE LA COMPAÑÍA en la SCVS. Si no la tiene, primero hace la
+   "Actualización de Información General".
+
+PASOS EN EL PORTAL
+1. www.supercias.gob.ec -> Portal de Trámites en Línea -> Sector Societario -> Estados Financieros -> Ingresar Balance Inicial.
+2. Adjuntar los dos TXT y presionar "Auditar y cuadrar". NO envía nada. Debe decir CUADRADO.
+3. Anexos: subir RUC, Comprobante de Depósito y Asiento de Diario. Revisar cada uno con "Ver PDF".
+4. "Enviar información". OJO: después de enviar no se puede rectificar.
+5. Guardar el comprobante que llega al correo de la compañía.
+
+SI "AUDITAR Y CUADRAR" DA ERROR
+- "El número total de cuentas no es el correcto" / "No consta la cuenta...": descargar la plantilla TXT del portal
+  (Formatos), dejar todo en 0.00 y cambiar solo las cuentas de capital.
+- Error de signo en 30102: probar con el valor positivo.
+- Mientras no salga CUADRADO no se envía nada.
+
+FORMATO DE LOS TXT
+- Una línea por cuenta: código, un espacio y el valor con 2 decimales y punto: 30101 200.00
+- Sin separador de miles; negativos con signo menos. No agregar ni borrar filas ni cambiar el orden.

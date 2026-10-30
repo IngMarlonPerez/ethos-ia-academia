@@ -1,0 +1,48 @@
+{
+  "razon_social": "EMPRESA EJEMPLO S.A.S.",
+  "nombre_comercial": "Ejemplo",
+  "tipo_societario": "S.A.S.",
+  "ruc": "0999999999001",
+  "clave_archivos": "EJEMPLO",
+  "nombres_anteriores": ["Nombre Reservado Que No Se Pudo S.A.S."],
+  "textos_prohibidos": ["próximamente", "en construcción", "coming soon"],
+  "domicilio": {
+    "pais": "Ecuador",
+    "provincia": "Azuay",
+    "ciudad": "Cuenca",
+    "direccion": "Av. Ejemplo y calle Muestra",
+    "direccion_membrete": "Cuenca, Ecuador"
+  },
+  "contacto": {
+    "telefono": "+593 99 999 9999",
+    "correo": "hola@ejemplo.ec",
+    "web": "www.ejemplo.ec"
+  },
+  "representante": {
+    "nombre": "Nombre Apellido Ejemplo",
+    "cargo": "Gerente General",
+    "identificacion": "0000000000"
+  },
+  "socios": [
+    {"nombre": "Nombre Apellido Ejemplo", "identificacion": "0000000000", "acciones": 200}
+  ],
+  "capital": {"suscrito": 200, "pagado": 0, "acciones": 200, "valor_nominal": 1, "plazo_pago_meses": 24},
+  "constitucion": {
+    "expediente": "000000",
+    "tramite": "2026.0.000000",
+    "inscripcion_numero": "000000",
+    "inscripcion_fecha": "2026-01-15",
+    "nombramiento_numero": "000001"
+  },
+  "actividades_ciiu": {"principal": "J6201.01 Desarrollo de sistemas informáticos a medida", "complementarias": []},
+  "marca": {
+    "color_primario": "0A1A2E",
+    "color_acento": "00D6FB",
+    "color_secundario": "5B6B72",
+    "color_texto": "0A0F1A",
+    "color_fondo_digital": "0A0F1A",
+    "tipografia_web": "Sora"
+  },
+  "redes": {},
+  "etapas": {}
+}

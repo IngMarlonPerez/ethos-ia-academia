@@ -1,0 +1,10 @@
+%% Estados de la entidad principal (p. ej. una solicitud, una matrícula, un pedido).
+stateDiagram-v2
+  direction TB
+  [*] --> BORRADOR: crear
+  BORRADOR --> ENVIADA: enviar
+  ENVIADA --> APROBADA: aprobar
+  ENVIADA --> RECHAZADA: rechazar
+  RECHAZADA --> BORRADOR: corregir
+  APROBADA --> CERRADA: completar
+  CERRADA --> [*]

@@ -1,0 +1,27 @@
+%% Modelo entidad-relación (o esquema estrella). Debe coincidir con el diccionario de datos
+%% generado del esquema REAL (diccionario_datos.py).
+erDiagram
+  CLIENTE ||--o{ PEDIDO : realiza
+  PEDIDO ||--|{ DETALLE_PEDIDO : contiene
+  PRODUCTO ||--o{ DETALLE_PEDIDO : aparece_en
+  CLIENTE {
+    int cliente_id PK
+    string nombre
+    string correo
+  }
+  PEDIDO {
+    int pedido_id PK
+    int cliente_id FK
+    date fecha
+    decimal total
+  }
+  DETALLE_PEDIDO {
+    int pedido_id FK
+    int producto_id FK
+    int cantidad
+  }
+  PRODUCTO {
+    int producto_id PK
+    string nombre
+    decimal precio
+  }

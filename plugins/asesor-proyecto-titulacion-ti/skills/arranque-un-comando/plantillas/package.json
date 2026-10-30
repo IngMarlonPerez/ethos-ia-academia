@@ -1,0 +1,19 @@
+{
+  "name": "<nombre-del-proyecto>",
+  "version": "1.0.0",
+  "private": true,
+  "description": "<Qué es el sistema y con qué tecnologías>. Atajos para levantar todo con Docker Compose.",
+  "author": "<Nombre de la autora> <correo institucional>",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:logs": "node scripts/dev.mjs --logs",
+    "estado": "docker compose ps",
+    "logs": "docker compose logs -f",
+    "stop": "docker compose stop",
+    "test": "node scripts/dev.mjs --tests",
+    "codigo": "code <proyecto>.code-workspace"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

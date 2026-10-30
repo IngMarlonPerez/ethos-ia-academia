@@ -1,0 +1,21 @@
+{
+  "_ayuda": "Datos del anexo de uso ético de IA. Los completan los autores con lo que realmente usaron; nada se inventa. Lo lee anexo_uso_ia.py.",
+  "universidad": "Universidad Estatal de Milagro",
+  "fecha": "AAAA-MM",
+  "herramientas": [
+    {"nombre": "Nombre de la herramienta y su interfaz", "proveedor_version": "Proveedor; modelo y versión", "periodo": "Meses de uso", "uso": "Para qué se usó"},
+    {"nombre": "Modelos de lenguaje del PRODUCTO (si el sistema los usa)", "proveedor_version": "", "periodo": "", "uso": "Componente funcional del sistema; no se usaron para redactar"}
+  ],
+  "tareas": [
+    "Tarea concreta 1 (p. ej., revisión y limpieza del código con pruebas automatizadas)",
+    "Tarea concreta 2 (p. ej., lectura asistida de artículos para extraer fichas con página)"
+  ],
+  "no_se_uso_para": "La IA no definió el problema, los objetivos, la pregunta de investigación ni las conclusiones. Las cifras del documento las produce el código al ejecutarse sobre los datos.",
+  "verificacion": [
+    "Cada propuesta de código se aceptó solo si pasaba las pruebas automatizadas.",
+    "Cada referencia se verificó por su DOI y, cuando se cita una evidencia, contra el texto completo con su página."
+  ],
+  "proteccion_datos": "No se entregó ningún dato personal a las herramientas de IA; los datos de prueba son sintéticos o anonimizados.",
+  "marco_institucional": "Qué dice el reglamento de titulación de la universidad sobre ética, honestidad académica o uso de IA (citar la página).",
+  "referencias_extra": []
+}
